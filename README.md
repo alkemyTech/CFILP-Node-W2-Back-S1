@@ -13,9 +13,3 @@ El objetivo de este proyecto es desarrollar una aplicación de gestión de datos
 ● Optimización de consultas a la base de datos.
 ● Trabajo con métodos, peticiones, Axios, errores, parámetros, servicios, documentación y variables de entorno.
 ● Implementación de roles y manejo de errores.
-
-
-## Autor
-Back Squad 1 | grupo MateAwait
-
-test
