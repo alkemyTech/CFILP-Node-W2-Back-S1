@@ -3,7 +3,8 @@ Repositorio Back Squad 1 | Node | CFI LP 25
 
 # Desafío SQL/Node | CFI | La Pampa
 
-El objetivo de este proyecto es desarrollar una aplicación de gestión de datos que permita a los usuarios realizar operaciones de consulta y modificación en una base de datos. Esta aplicación se desarrollará utilizando las tecnologías SQL y Node.js
+El objetivo de este proyecto es desarrollar una aplicación de gestión de datos que permita a los usuarios realizar operaciones de consulta y modificación en una base de datos. 
+Esta aplicación se desarrollará utilizando las tecnologías SQL y Node.js
 
 ● Uso de Node.js para la implementación del backend.
 ● Aplicación de middleware.
