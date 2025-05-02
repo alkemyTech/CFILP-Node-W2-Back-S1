@@ -14,14 +14,35 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Usuarios.init({
-    nombre: DataTypes.STRING,
-    apellido: DataTypes.STRING,
-    usuario: DataTypes.STRING,
-    password: DataTypes.STRING,
-    rol: DataTypes.ENUM
+    nombre: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    apellido: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    usuario: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    rol: {
+      type: DataTypes.ENUM('user', 'admin'),
+      allowNull: false,
+      defaultValue: 'user'
+    }
   }, {
     sequelize,
     modelName: 'Usuarios',
+    indexes: [
+      { fields: ['usuario'], unique: true, name: 'idx_usuario' },
+      { fields: ['rol'], name: 'idx_usuarios_rol' }
+    ]
   });
   return Usuarios;
 };
