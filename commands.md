@@ -16,3 +16,10 @@ npx sequelize-cli model:generate --name Libros --attributes isbn:string,titulo:s
 
 # Ejecutar migraciones
 npx sequelize-cli db:migrate
+
+# Generar seeders y ejecutarlos
+npx sequelize-cli seed:generate --name usuarios
+
+npx sequelize-cli seed:generate --name libros
+
+npx sequelize-cli db:seed:all
