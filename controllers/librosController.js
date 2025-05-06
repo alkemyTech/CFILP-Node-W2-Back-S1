@@ -9,7 +9,7 @@ function mapCategorias(libroCategorias) {
 
 class LibrosController {
   async getAllLibros(req, res) {
-    const libros = await LibrosService.getAllLibros()
+    const libros = await LibrosService.getAllLibros(req.query)
     res.send(libros.map(libro => ({ ...libro.dataValues, categorias: mapCategorias(libro.categorias) })))
   }
 
