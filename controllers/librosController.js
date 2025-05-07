@@ -21,18 +21,24 @@ class LibrosController {
 
   // Crear Libros
   async createLibro(req, res) { 
+    const { isbn, titulo, autor, categorias, disponibilidad } = req.body
+    await LibrosService.createLibro({ isbn, titulo, autor, categorias, disponibilidad })
     res.send('Creado')
   }
   
   // Actualizar Libros
   async updateLibro (req, res) { 
+    const { id } = req.params
+    const { isbn, titulo, autor, categorias, disponibilidad } = req.body
+    await LibrosService.updateLibro(id, { isbn, titulo, autor, categorias, disponibilidad })
     res.send('Actualizado')
   }
   
-  // Borrar Libros
-  async deleteLibro (req, res) { 
-    res.send('Borrado')
+    // Borrar Libros
+    async deleteLibro (req, res) { 
+      const libro = await LibrosService.deleteLibro(req.params.id)
+      res.send('Borrado')
+    }
   }
-}
 
 module.exports = new LibrosController()
