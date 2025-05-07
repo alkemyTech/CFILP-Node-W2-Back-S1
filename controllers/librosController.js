@@ -19,19 +19,20 @@ class LibrosController {
     res.send({ ...libro.dataValues, categorias: mapCategorias(libro.categorias) })
   }
 
-// Crear Libros
-async createLibro(req, res) { 
-  res.send('Creado')
+  // Crear Libros
+  async createLibro(req, res) { 
+    res.send('Creado')
+  }
+  
+  // Actualizar Libros
+  async updateLibro (req, res) { 
+    res.send('Actualizado')
+  }
+  
+  // Borrar Libros
+  async deleteLibro (req, res) { 
+    res.send('Borrado')
+  }
 }
 
-// Actualizar Libros
-async updateLibro (req, res) { 
-  res.send('Actualizado')
-}
-
-// Borrar Libros
-async deleteLibro (req, res) { 
-  res.send('Borrado')
-}
-}
 module.exports = new LibrosController()
