@@ -1,4 +1,5 @@
 // LibrosService.js - logica de negocio
+const { LibrosService } = require('../controllers/librosController')
 const { Libros } = require('../models')
 
 class LibrosService {
@@ -8,6 +9,18 @@ class LibrosService {
 
   async getLibroByID(id) {
     return await Libros.findOne({ where: { id } })
+  }
+
+  async createLibro(libro) {
+    return await Libros.create(libro)
+  }
+
+  async updateLibro(id, libro) {
+    return await Libros.update(libro, { where: { id } })
+  }
+
+  async deleteLibro(id) {
+    return await Libros.destroy({ where: { id } })
   }
 }
 
