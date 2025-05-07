@@ -20,4 +20,19 @@ class LibrosController {
   }
 }
 
+// Crear Libros
+async createLibro(req, res); { 
+  res.send('Creado')
+}
+
+// Actualizar Libros
+async updateLibro (req, res); { 
+  res.send('Actualizado')
+}
+
+// Borrar Libros
+async deleteLibro (req, res); { 
+  res.send('Borrado')
+}
+
 module.exports = new LibrosController()
