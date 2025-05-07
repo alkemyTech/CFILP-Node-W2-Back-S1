@@ -39,5 +39,6 @@ class LibrosController {
     await LibrosService.deleteLibro(req.params.id)
     res.send('Borrado')
   }
+}
 
 module.exports = new LibrosController()
