@@ -34,11 +34,10 @@ class LibrosController {
     res.send('Actualizado')
   }
   
-    // Borrar Libros
-    async deleteLibro (req, res) { 
-      const libro = await LibrosService.deleteLibro(req.params.id)
-      res.send('Borrado')
-    }
+  // Borrar Libros
+  async deleteLibro (req, res) {
+    await LibrosService.deleteLibro(req.params.id)
+    res.send('Borrado')
   }
 
 module.exports = new LibrosController()
