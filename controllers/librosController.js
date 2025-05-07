@@ -18,21 +18,20 @@ class LibrosController {
     const libro = await LibrosService.getLibroByID(id)
     res.send({ ...libro.dataValues, categorias: mapCategorias(libro.categorias) })
   }
-}
 
 // Crear Libros
-async createLibro(req, res); { 
+async createLibro(req, res) { 
   res.send('Creado')
 }
 
 // Actualizar Libros
-async updateLibro (req, res); { 
+async updateLibro (req, res) { 
   res.send('Actualizado')
 }
 
 // Borrar Libros
-async deleteLibro (req, res); { 
+async deleteLibro (req, res) { 
   res.send('Borrado')
 }
-
+}
 module.exports = new LibrosController()
