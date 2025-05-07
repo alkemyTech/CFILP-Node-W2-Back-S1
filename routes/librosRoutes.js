@@ -10,4 +10,13 @@ librosRouter.get('/', LibrosController.getAllLibros)
 // Consultar libro por ID (accesible para todos)
 librosRouter.get('/:id', LibrosController.getLibroByID)
 
+// Crear un libro
+librosRouter.post('/', LibrosController.createLibro)
+
+// Modificar un libro
+librosRouter.put('/:id', LibrosController.updateLibro)
+
+// Borrar un libro
+librosRouter.delete('/:id', LibrosController.deleteLibro)
+
 module.exports = librosRouter
