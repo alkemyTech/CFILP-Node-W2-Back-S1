@@ -3,6 +3,7 @@ const app = express()
 const PORT = process.env.PORT || 3000
 
 const librosRoutes = require('./routes/librosRoutes')
+const usuarioRoutes = require('./routes/usuarioRoutes')
 
 // Middleware JSON para parsear los datos enviados por el cliente (body)
 app.use(express.json())
@@ -12,6 +13,8 @@ app.get('/', (req, res) => {
 })
 
 app.use('/libros', librosRoutes)
+
+app.use('/usuarios', usuarioRoutes)
 
 app.listen(PORT, () => {
   console.log(`El servidor está corriendo en el puerto ${PORT}`)

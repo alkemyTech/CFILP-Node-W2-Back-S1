@@ -2,8 +2,10 @@
 const { Libros } = require('../models')
 
 class LibrosService {
-  async getAllLibros() {
-    return await Libros.findAll()
+  async getAllLibros({ disponibilidad }) {
+    const where = {}
+    if (disponibilidad) where.disponibilidad = disponibilidad
+    return await Libros.findAll({ where })
   }
 
   async getLibroByID(id) {

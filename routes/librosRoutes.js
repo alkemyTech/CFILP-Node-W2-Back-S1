@@ -1,7 +1,6 @@
 // LibrosRoutes.js - endpoints
 const express = require('express')
 const LibrosController = require('../controllers/librosController')
-const librosController = require('../controllers/librosController')
 
 const librosRouter = express.Router()
 
