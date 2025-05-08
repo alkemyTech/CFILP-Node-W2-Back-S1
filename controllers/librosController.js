@@ -21,7 +21,7 @@ class LibrosController {
 
   // Crear Libros
   async createLibro(req, res) { 
-    const { isbn, titulo, autor, categorias, disponibilidad } = req.body
+    const { isbn, titulo, autor, anio, categorias, disponibilidad } = req.body
     await LibrosService.createLibro({ isbn, titulo, autor, categorias, disponibilidad })
     res.send('Creado')
   }
@@ -29,7 +29,7 @@ class LibrosController {
   // Actualizar Libros
   async updateLibro (req, res) { 
     const { id } = req.params
-    const { isbn, titulo, autor, categorias, disponibilidad } = req.body
+    const { isbn, titulo, autor, anio, categorias, disponibilidad } = req.body
     await LibrosService.updateLibro(id, { isbn, titulo, autor, categorias, disponibilidad })
     res.send('Actualizado')
   }
