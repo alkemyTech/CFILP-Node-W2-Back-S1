@@ -5,6 +5,8 @@ const PORT = process.env.PORT || 3000
 const librosRoutes = require('./routes/librosRoutes')
 const usuarioRoutes = require('./routes/usuarioRoutes')
 
+const errorMiddleware = require('./middleware/errorMiddleware')
+
 // Middleware JSON para parsear los datos enviados por el cliente (body)
 app.use(express.json())
 
@@ -15,6 +17,9 @@ app.get('/', (req, res) => {
 app.use('/libros', librosRoutes)
 
 app.use('/usuarios', usuarioRoutes)
+
+// Middleware de errores debe ir al final para recibir todos los errores
+app.use(errorMiddleware)
 
 app.listen(PORT, () => {
   console.log(`El servidor está corriendo en el puerto ${PORT}`)

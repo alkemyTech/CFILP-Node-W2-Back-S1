@@ -1,11 +1,11 @@
-// ARCHIVO TEMPORAL (se va a usar el de la rama Usuarios)
+const express = require('express')
+const UsuarioController = require('../controllers/usuarioController')
 
-const express = require('express');
-const UsuarioController = require('../controllers/usuarioController');
-const usuarioRoutes = express.Router();
-const validarCampos = require('../middleware/validarCampos'); // Importa el middleware para validar campos
+const { validateUserCreate } = require('../middleware/userMiddleware')
 
-// Verifica que los métodos del controlador están correctamente definidos.
-usuarioRoutes.post('/',validarCampos, UsuarioController.creaUsuario);  // Crear un nuevo usuario
+const usuarioRoutes = express.Router()
 
-module.exports = usuarioRoutes;
+// Crear un nuevo usuario
+usuarioRoutes.post('/', validateUserCreate, UsuarioController.creaUsuario)
+
+module.exports = usuarioRoutes
