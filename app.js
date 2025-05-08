@@ -4,6 +4,9 @@ const PORT = process.env.PORT || 3000
 
 const librosRoutes = require('./routes/librosRoutes')
 
+// Middleware JSON para parsear los datos enviados por el cliente (body)
+app.use(express.json())
+
 app.get('/', (req, res) => {
   res.send('Alke Biblioteca')
 })
