@@ -1,3 +1,5 @@
+// ARCHIVO TEMPORAL (se va a usar el de la rama Usuarios)
+
 const express = require('express');
 const UsuarioController = require('../controllers/usuarioController');
 const usuarioRoutes = express.Router();

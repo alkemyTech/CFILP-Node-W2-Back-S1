@@ -1,3 +1,5 @@
+// ARCHIVO TEMPORAL (se va a usar el de la rama Usuarios)
+
 const { Usuarios } = require("../models"); // Importa el modelo de usuario desde el archivo de modelos
 
 class UsuarioService {

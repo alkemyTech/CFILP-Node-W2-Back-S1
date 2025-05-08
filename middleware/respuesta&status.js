@@ -6,52 +6,46 @@
 // 500 Internal Server Error: Error inesperado en el servidor al procesar la solicitud
 
 const succesResponse = (res, data, elemento) => {
-  return res.status(200).json({
-    mesaje: `El ${elemento} fue encontrado`,
-    data,
-  });
-};
+  return res.status(200).json({ mensaje: `El ${elemento} fue encontrado`, data})
+}
 
 const createdResponse = (res, data, elemento) => {
-  return res.status(201).json({
-    mesaje: `El ${elemento} fue creado`,
-    data,
-  });
-};
+  return res.status(201).json({ mensaje: `El ${elemento} fue creado`, data })
+}
 
 const badRequestResponse = (res, error, elemento, customMessage) => {
   return res.status(400).json({
     mensaje: customMessage || `El ${elemento} no fue creado`,
     error: error.message || error,
     detalles: error.errors ? error.errors.map((err) => err.message) : [],
-    campo: elemento,
-  });
-};
+    campo: elemento
+  })
+}
 
 const forbiddenResponse = (res, error, elemento) => {
   return res.status(403).json({
     mensaje: `El ${elemento} no fue creado`,
     error,
-    campo: elemento,
-  });
-};
+    campo: elemento
+  })
+}
 
 const notFoundResponse = (res, error, elemento) => {
   return res.status(404).json({
     mensaje: `El ${elemento} no fue encontrado`,
     error: error.message || error,
-    campo: elemento,
-  });
-};
+    campo: elemento
+  })
+}
 
 const internalServerErrorResponse = (res, error, elemento) => {
   return res.status(500).json({
     mensaje: `El ${elemento} no fue creado`,
     error: error.message || error,
     detalles: error.errors ? error.errors.map((err) => err.message) : [],
-    campo: elemento,
-  });
-};
+    campo: elemento
+  })
+}
 
 module.exports = {
   succesResponse,
@@ -59,5 +53,5 @@ module.exports = {
   badRequestResponse,
   forbiddenResponse,
   notFoundResponse,
-  internalServerErrorResponse,
-};
+  internalServerErrorResponse
+}
