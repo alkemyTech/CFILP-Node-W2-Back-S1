@@ -8,6 +8,9 @@ const usuarioRoutes = require('./routes/usuarioRoutes')
 // Middleware JSON para parsear el body de la petición
 app.use(express.json())
 
+// Middleware JSON para parsear los datos enviados por el cliente (body)
+app.use(express.json())
+
 app.get('/', (req, res) => {
   res.send('Alke Biblioteca')
 })
