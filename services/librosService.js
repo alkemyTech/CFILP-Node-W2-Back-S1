@@ -1,5 +1,4 @@
 // LibrosService.js - logica de negocio
-const { deleteLibro } = require('../controllers/librosController')
 const { Libros } = require('../models')
 
 class LibrosService {
