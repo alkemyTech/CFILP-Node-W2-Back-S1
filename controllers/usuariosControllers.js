@@ -23,7 +23,7 @@ class UsuariosController {
       })
 
       // 201 Created: Recurso creado
-      return res.status(201).json({
+      res.status(201).json({
         message: "Usuario fue creado correctamente",
         // Devolver usuario sin la contraseña
         usuario: { ...nuevoUsuario.dataValues, password: undefined }
@@ -40,7 +40,7 @@ class UsuariosController {
       const { nombre , apellido, usuarios} = req.body
       await UsuariosService.updateUsuario(id , {nombre , apellido, usuarios})
       
-      return res.status(200).json({ message: "Usuario actualizado exitosamente" })
+      res.status(200).json({ message: "Usuario actualizado exitosamente" })
     } catch (error) {
       next(error)
     }
@@ -51,7 +51,7 @@ class UsuariosController {
     try {
       await UsuariosService.deleteUsuario(req.params.id)
       
-      return res.status(200).json({ message: "Usuario fue eliminado" })
+      res.status(200).json({ message: "Usuario fue eliminado" })
     } catch (error) {
       next(error)
     }

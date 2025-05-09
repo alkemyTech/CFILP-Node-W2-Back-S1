@@ -7,10 +7,10 @@ const { validateUserCreate } = require("../middleware/userMiddleware")
 const UsuarioRouter = express.Router()
 
 // Consultar todos los Usuarios 
-UsuarioRouter.get('/', validateUserCreate, UsuariosController.getAllUsuarios)
+UsuarioRouter.get('/', UsuariosController.getAllUsuarios)
 
 // Crear un usuario
-UsuarioRouter.post('/', UsuariosController.createUsuario)
+UsuarioRouter.post('/', validateUserCreate, UsuariosController.createUsuario)
 
 // Modificar un usuario
 UsuarioRouter.put('/:id', UsuariosController.updateUsuario)
