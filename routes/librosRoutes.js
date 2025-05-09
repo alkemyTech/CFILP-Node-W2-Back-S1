@@ -2,6 +2,8 @@
 const express = require('express')
 const LibrosController = require('../controllers/librosController')
 
+const { validateLibroCreate } = require('../middleware/libroMiddleware')
+
 const librosRouter = express.Router()
 
 // Consultar libros (accesible para todos)
@@ -11,7 +13,7 @@ librosRouter.get('/', LibrosController.getAllLibros)
 librosRouter.get('/:id', LibrosController.getLibroByID)
 
 // Crear un libro
-librosRouter.post('/', LibrosController.createLibro)
+librosRouter.post('/', validateLibroCreate, LibrosController.createLibro)
 
 // Modificar un libro
 librosRouter.put('/:id', LibrosController.updateLibro)
