@@ -1,21 +1,21 @@
 // Usuarios Service - logica de negocio
 const { Usuarios } = require ('../models')
 
-
 class UsuariosService {
-    async getAllUsuarios () {
+
+  async getAllUsuarios () {
     return await Usuarios.findAll()
   }
 
-  async createUsuarios(usuarios) {
-    return await Usuarios.create(usuarios)
+  async createUsuario(usuario) {
+    return await Usuarios.create(usuario)
   }
 
-  async updateUsuarios(id, usuarios) {
-    return await Usuarios.update(usuarios, { where: { id } })
+  async updateUsuario(id, usuario) {
+    return await Usuarios.update(usuario, { where: { id } })
   }
 
-  async deleteUsuarios(id) {
+  async deleteUsuario(id) {
     return await Usuarios.destroy({ where: { id } })
   }
 

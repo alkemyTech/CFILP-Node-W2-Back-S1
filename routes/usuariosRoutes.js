@@ -8,12 +8,12 @@ const UsuarioRouter = express.Router()
 UsuarioRouter.get('/', UsuariosController.getAllUsuarios)
 
 // Crear un usuario
-UsuarioRouter.post('/', UsuariosController.createUsuarios)
+UsuarioRouter.post('/', UsuariosController.createUsuario)
 
 // Modificar un usuario
-UsuarioRouter.put('/:id', UsuariosController.updateUsuarios)
+UsuarioRouter.put('/:id', UsuariosController.updateUsuario)
 
 // Borrar un usuario
-UsuarioRouter.delete('/:id', UsuariosController.deleteUsuarios)
+UsuarioRouter.delete('/:id', UsuariosController.deleteUsuario)
 
 module.exports = UsuarioRouter
