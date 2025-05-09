@@ -2,10 +2,12 @@
 const express = require ("express")
 const UsuariosController = require('../controllers/usuariosControllers')
 
+const { validateUserCreate } = require("../middleware/userMiddleware")
+
 const UsuarioRouter = express.Router()
 
 // Consultar todos los Usuarios 
-UsuarioRouter.get('/', UsuariosController.getAllUsuarios)
+UsuarioRouter.get('/', validateUserCreate, UsuariosController.getAllUsuarios)
 
 // Crear un usuario
 UsuarioRouter.post('/', UsuariosController.createUsuario)
