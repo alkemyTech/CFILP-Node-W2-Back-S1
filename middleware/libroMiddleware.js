@@ -5,6 +5,7 @@ const validacionCamposLibro = [
     textoLimpio('isbn', 10, 'alphanumeric'),
     textoLimpio('titulo', 3, 'alpha'),
     textoLimpio('autor', 3, 'alpha'),
+    textoLimpio('anio', 4, 'numeric'), //tomando que anio la manejamos como un numero
     textoLimpio('categorias', 1, 'numeric'), //tomando que categoria la manejamos como un numero
     textoLimpio('disponibilidad', 1, 'numeric'), //tomando que disponibilidad la manejamos como un numero
 
