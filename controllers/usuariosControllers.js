@@ -1,60 +1,62 @@
 //Usuarios Controller - solicitudes HTTP
-const UsuariosService = require('../services/usuariosService')
+const UsuariosService = require("../services/usuariosService");
+const { Usuarios } = require("../models"); // ruta según tu estructura
 
 class UsuariosController {
-
   //Obtener Usuarios
   async getAllUsuarios(req, res, next) {
     try {
-      const usuarios = await UsuariosService.getAllUsuarios()
+      const usuarios = await UsuariosService.getAllUsuarios();
 
-      res.status(200).send(usuarios)
+      res.status(200).send(usuarios);
     } catch (error) {
-      next(error)
+      next(error);
     }
   }
 
   // Crear Usuario
-  async createUsuario(req, res, next) { 
+  async createUsuario(req, res, next) {
+     
     try {
-      const { nombre , apellido, usuario, password} = req.body
-      await UsuariosService.createUsuario({ nombre , apellido, usuario, password})
+      const { nombre, apellido, usuario, password } = req.body;
+
+      const nuevoUsuario = await UsuariosService.createUsuario({ nombre, apellido, usuario, password });
 
       // 201 Created: Recurso creado
       return res.status(201).json({
         message: "Usuario fue creado correctamente",
-        // Devolver usuario sin la contraseña
         usuario: { ...nuevoUsuario.dataValues, password: undefined }
-      })
+      });
     } catch (error) {
-      next(error)
+      next(error);
     }
   }
 
   // Actualizar Usuario
-  async updateUsuario (req, res, next) {
+  async updateUsuario(req, res, next) {
     try {
-      const { id } = req.params
-      const { nombre , apellido, usuarios} = req.body
-      await UsuariosService.updateUsuario(id , {nombre , apellido, usuarios})
-      
-      return res.status(200).json({ message: "Usuario actualizado exitosamente" })
+      const { id } = req.params;
+      const { nombre, apellido, usuarios } = req.body;
+      await UsuariosService.updateUsuario(id, { nombre, apellido, usuarios });
+
+      return res
+        .status(200)
+        .json({ message: "Usuario actualizado exitosamente" });
     } catch (error) {
-      next(error)
+      next(error);
     }
   }
 
   // Borrar Usuario
-  async deleteUsuario (req, res, next) {
+  async deleteUsuario(req, res, next) {
     try {
-      await UsuariosService.deleteUsuario(req.params.id)
-      
-      return res.status(200).json({ message: "Usuario fue eliminado" })
+      await UsuariosService.deleteUsuario(req.params.id);
+
+      return res.status(200).json({ message: "Usuario fue eliminado" });
     } catch (error) {
-      next(error)
+      next(error);
     }
   }
-
 }
 
-module.exports = new UsuariosController()
+module.exports = new UsuariosController();

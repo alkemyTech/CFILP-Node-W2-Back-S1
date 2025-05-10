@@ -1,12 +1,30 @@
+const { validationResult } = require("express-validator");
 const { textoLimpio } = require("../utils/validarCampos.js");
-// recibe el nombre del campo, la longitud minima y el tipo de validacion
-// si no se pasa el tipo de validacion, se valida que no este vacio y que tenga la longitud minima
 
+// Definir las validaciones para los campos de usuario
 const validaCamposUsuario = [
-    textoLimpio("nombre", 3, "alpha"),
-    textoLimpio("apellido", 3, "alpha"),
-    textoLimpio("usuario", 3, "alphanumeric"),
-    textoLimpio("password", 6, "alphanumeric")
-]
+  textoLimpio("nombre", 3, "alpha"),
+  textoLimpio("apellido", 3, "alpha"),
+  textoLimpio("usuario", 3, "alphanumeric"),
+  textoLimpio("password", 6, "alphanumeric"),
 
-module.exports = validaCamposUsuario
+  // Middleware para verificar los errores después de las validaciones
+  (req, res, next) => {
+    const errors = validationResult(req);
+
+    // Si hay errores, agruparlos y devolverlos juntos
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        errors: errors.array().map(err => ({
+          field: err.param,
+          message: err.msg
+        }))
+      });
+    }
+
+    // Si no hay errores, continuar con el siguiente middleware o controlador
+    next();
+  }
+];
+
+module.exports = validaCamposUsuario;

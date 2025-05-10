@@ -8,6 +8,24 @@ const validacionCamposLibro = [
     textoLimpio('autor', 3, 'alpha'),
     textoLimpio('genero', 3, 'alpha'),
     textoLimpio('disponibilidad', 1, 'numeric'), //tomando que disponibilidad la manejamos como un numero
+
+     // Middleware para verificar los errores después de las validaciones
+      (req, res, next) => {
+        const errors = validationResult(req);
+    
+        // Si hay errores, agruparlos y devolverlos juntos
+        if (!errors.isEmpty()) {
+          return res.status(400).json({
+            errors: errors.array().map(err => ({
+              field: err.param,
+              message: err.msg
+            }))
+          });
+        }
+    
+        // Si no hay errores, continuar con el siguiente middleware o controlador
+        next();
+      }
 ];
 
 module.exports = validacionCamposLibro
