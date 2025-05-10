@@ -1,8 +1,9 @@
 // UsuarioRoutes - endpoints
 const express = require ("express")
 const UsuariosController = require('../controllers/usuariosControllers')
+const { validateUser } = require("../middleware/usuarioMiddleware") // valida con express-validator
 
-const { validateUserCreate } = require("../middleware/userMiddleware")
+const { validateUserCreate } = require("../middleware/userMiddleware") // este deberia borrarse
 
 const UsuarioRouter = express.Router()
 
