@@ -1,4 +1,4 @@
-const { textoLimpio } = require('../helpers/validacionCampos.js');
+const { textoLimpio } = require('../utils/validarCampos.js');
 
 const validacionCamposLibro = [
     textoLimpio('isbn', 10, 'alphanumeric'),
