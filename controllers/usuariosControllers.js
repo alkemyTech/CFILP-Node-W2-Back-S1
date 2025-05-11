@@ -6,9 +6,14 @@ const UsuariosService = require('../services/usuariosService')
 class UsuariosController {
 
   //Obtener Usuarios
-  async getAllUsuarios(req, res) {
-    const usuarios = await UsuariosService.getAllUsuarios()
-    res.send(usuarios)
+  async getAllUsuarios(req, res, next) {
+    try {
+      const usuarios = await UsuariosService.getAllUsuarios(req.body)
+
+      res.status(200).send(usuarios)
+    } catch (error) {
+      next(error)
+    }
   }
 
 // Crear Usuario

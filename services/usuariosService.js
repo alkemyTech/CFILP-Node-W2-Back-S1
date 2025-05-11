@@ -1,22 +1,45 @@
 // Usuarios Service - logica de negocio
 const { Usuarios } = require ('../models')
+const { handleSequelizeError } = require("../utils/errorHandler")
+
+const { Op } = require("sequelize")
 
 
 class UsuariosService {
-    async getAllUsuarios () {
-    return await Usuarios.findAll()
+
+  async getAllUsuarios (body) {
+    try { 
+      const where = {} 
+      if (body.nombre) where.nombre = { [Op.like]: `%${ body.nombre }%` }
+      if (body.apellido) where.apellido = { [Op.like]: `%${ body.apellido }%` }
+      return await Usuarios.findAll( { where } )
+    } catch (error) {
+      throw handleSequelizeError(error)
+    }
   }
 
-  async createUsuarios(usuarios) {
-    return await Usuarios.create(usuarios)
+  async createUsuario(usuario) {
+    try {
+      return await Usuarios.create(usuario)
+    } catch (error) {
+      throw handleSequelizeError(error)
+    }
   }
 
-  async updateUsuarios(id, usuarios) {
-    return await Usuarios.update(usuarios, { where: { id } })
+  async updateUsuario(id, usuario) {
+    try {
+      return await Usuarios.update(usuario, { where: { id } })
+    } catch (error) {
+      throw handleSequelizeError(error)
+    }
   }
 
-  async deleteUsuarios(id) {
-    return await Usuarios.destroy({ where: { id } })
+  async deleteUsuario(id) {
+    try {
+      return await Usuarios.destroy({ where: { id } })
+    } catch (error) {
+      throw handleSequelizeError(error)
+    }
   }
 
 }
