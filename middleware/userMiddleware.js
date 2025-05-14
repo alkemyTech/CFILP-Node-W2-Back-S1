@@ -1,5 +1,15 @@
 const { CustomError } = require('../utils/errorHandler')
 
+const validateLogin = (req, res, next) => {
+  const { usuario, password } = req.body
+
+  if (!usuario || !password) {
+    throw new CustomError('Usuario y Contraseña son obligatorios', 400)
+  }
+
+  next()
+}
+
 const validateUserCreate = (req, res, next) => {
   const { nombre, apellido, usuario, password } = req.body
 
@@ -11,4 +21,4 @@ const validateUserCreate = (req, res, next) => {
   next()
 }
 
-module.exports = { validateUserCreate }
+module.exports = { validateLogin, validateUserCreate }

@@ -1,11 +1,32 @@
 // Usuarios Service - logica de negocio
 const { Usuarios } = require("../models")
-const { handleSequelizeError } = require("../utils/errorHandler")
+const bcrypt = require("bcrypt")
+
+const { handleSequelizeError, CustomError } = require("../utils/errorHandler")
+const { generateToken } = require("../utils/jwt")
 
 const { Op } = require("sequelize")
 
 class UsuariosService {
-  async getAllUsuarios(body) {
+  async login({ usuario, password }) {
+    try {
+      // Verificar que el usuario existe
+      const user = await Usuarios.findOne({ where: { usuario } })
+      if (!user) throw new CustomError("El usuario no existe", 401)
+
+      // Verificar que la contraseña sea correcta
+      const isMatch = await bcrypt.compare(password, user.password)
+      if (!isMatch) throw new CustomError("Credenciales inválidas", 401)
+
+      // Generar y devolver token
+      return generateToken(user)
+    } catch (error) {
+      if (error.name.includes("Sequelize")) throw handleSequelizeError(error)
+      throw error
+    }
+  }
+
+  async getAllUsuarios() {
     try {
       const where = {}
       if (body) {
@@ -23,7 +44,9 @@ class UsuariosService {
 
   async createUsuario(usuario) {
     try {
-      return await Usuarios.create(usuario)
+      const hashedPassword = await bcrypt.hash(usuario.password, 10)
+
+      return await Usuarios.create({ ...usuario, password: hashedPassword })
     } catch (error) {
       throw handleSequelizeError(error)
     }
