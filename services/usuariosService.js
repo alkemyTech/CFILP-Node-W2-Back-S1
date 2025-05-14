@@ -1,12 +1,21 @@
 // Usuarios Service - logica de negocio
-const { Usuarios } = require ('../models')
+const { Usuarios } = require("../models")
 const { handleSequelizeError } = require("../utils/errorHandler")
 
-class UsuariosService {
+const { Op } = require("sequelize")
 
-  async getAllUsuarios () {
+class UsuariosService {
+  async getAllUsuarios(body) {
     try {
-      return await Usuarios.findAll()
+      const where = {}
+      if (body) {
+        const { nombre, apellido, usuario, rol } = body
+        if (nombre) where.nombre = { [Op.like]: `%${nombre}%` }
+        if (apellido) where.apellido = { [Op.like]: `%${apellidok}%` }
+        if (usuario) where.usuario = { [Op.like]: `%${usuario}%` }
+        if (rol) where.rol = { [Op.like]: `%${rol}%` }
+      }
+      return await Usuarios.findAll({ where })
     } catch (error) {
       throw handleSequelizeError(error)
     }
@@ -35,7 +44,6 @@ class UsuariosService {
       throw handleSequelizeError(error)
     }
   }
-
 }
 
-module.exports = new UsuariosService ()
+module.exports = new UsuariosService()
