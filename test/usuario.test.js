@@ -4,12 +4,13 @@ const UsuariosService = require("../services/usuariosService");
 const {
   verificarRespuestaUsuarioCreado,
   verificarStatusError,
+  verificarStatusDuplicado
 } = require("../utils/errorTestCode.js");
 
 const usuarioValido = {
   nombre: "Test",
   apellido: "Test",
-  usuario: "TestUser",
+  usuario: "TestUser6",
   password: "password123",
 };
 
@@ -51,7 +52,7 @@ describe("POST /usuarios", () => {
     // Luego, intenta crear otro usuario con el mismo nombre de usuario
     const response = await request(app).post("/usuarios").send(usuarioValido);
 
-    verificarStatusError(response, 409);
+    verificarStatusDuplicado(response, 409);
   });
 
   it("debería devolver un error 500 si ocurre un error en el servidor", async () => {
