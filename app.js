@@ -1,26 +1,23 @@
-const express = require('express')
-const app = express()
-const PORT = process.env.PORT || 3000
+const express = require('express');
+const app = express();
 
-const librosRoutes = require('./routes/librosRoutes')
-const usuariosRoutes = require('./routes/usuariosRoutes')
+const usuariosRoutes = require('./routes/usuariosRoutes');
+const librosRoutes = require('./routes/librosRoutes');
+const errorMiddleware = require('./middleware/errorMiddleware');
 
-const errorMiddleware = require('./middleware/errorMiddleware')
+// Middleware para parsear JSON
+app.use(express.json());
 
-// Middleware JSON para parsear los datos enviados por el cliente (body)
-app.use(express.json())
+// Rutas
+app.use('/usuarios', usuariosRoutes);
+app.use('/libros', librosRoutes);
 
+// Ruta base de prueba
 app.get('/', (req, res) => {
-  res.send('Alke Biblioteca')
-})
+  res.send('Alke Biblioteca');
+});
 
-app.use('/libros', librosRoutes)
+// Middleware para manejo de errores (al final)
+app.use(errorMiddleware);
 
-app.use('/usuarios', usuariosRoutes)
-
-// Middleware de errores debe ir al final para recibir todos los errores
-app.use(errorMiddleware)
-
-app.listen(PORT, () => {
-  console.log(`El servidor está corriendo en el puerto ${PORT}`)
-})
+module.exports = app;

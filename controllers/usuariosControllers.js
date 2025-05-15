@@ -15,22 +15,15 @@ class UsuariosController {
   }
 
   // Crear Usuario
-  async createUsuario(req, res, next) {
-     
-    try {
-      const { nombre, apellido, usuario, password } = req.body;
-
-      const nuevoUsuario = await UsuariosService.createUsuario({ nombre, apellido, usuario, password });
-
-      // 201 Created: Recurso creado
-      return res.status(201).json({
-        message: "Usuario fue creado correctamente",
-        usuario: { ...nuevoUsuario.dataValues, password: undefined }
-      });
-    } catch (error) {
-      next(error);
-    }
+async createUsuario(req, res, next) {
+  try {
+    const { nombre, apellido, usuario, password } = req.body;
+    const nuevoUsuario = await UsuariosService.createUsuario({ nombre, apellido, usuario, password });
+    return res.status(201).json({ usuario: nuevoUsuario });
+  } catch (error) {
+    next(error);
   }
+}
 
   // Actualizar Usuario
   async updateUsuario(req, res, next) {

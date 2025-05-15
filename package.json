@@ -4,7 +4,8 @@
   "description": "Repositorio Back Squad 1 | Node | CFI LP 25",
   "main": "app.js",
   "scripts": {
-    "start": "node --watch app.js"
+    "start": "node --watch server.js",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -25,5 +26,9 @@
     "mysql2": "^3.14.1",
     "sequelize": "^6.37.7",
     "sequelize-cli": "^6.6.2"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^7.1.1"
   }
 }
