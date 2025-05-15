@@ -4,13 +4,14 @@ const UsuariosService = require("../services/usuariosService");
 const {
   verificarRespuestaUsuarioCreado,
   verificarStatusError,
-  verificarStatusDuplicado
+  verificarStatusDuplicado,
+  verificarStatusErrorServidor,
 } = require("../utils/errorTestCode.js");
 
 const usuarioValido = {
   nombre: "Test",
   apellido: "Test",
-  usuario: "TestUser6",
+  usuario: "TestUser7",
   password: "password123",
 };
 
@@ -63,7 +64,8 @@ describe("POST /usuarios", () => {
     const response = await request(app).post("/usuarios").send(usuarioValido);
 
     expect(response.status).toBe(500);
-    expect(response.body).toHaveProperty("message", "Error del servidor");
+    expect(response.body).toHaveProperty("error");
+    expect(response.body.error).toHaveProperty("message", "Error del servidor");
 
     UsuariosService.createUsuario.mockRestore();
   });
