@@ -32,7 +32,7 @@ class UsuariosService {
       if (body) {
         const { nombre, apellido, usuario, rol } = body
         if (nombre) where.nombre = { [Op.like]: `%${nombre}%` }
-        if (apellido) where.apellido = { [Op.like]: `%${apellidok}%` }
+        if (apellido) where.apellido = { [Op.like]: `%${apellido}%` }
         if (usuario) where.usuario = { [Op.like]: `%${usuario}%` }
         if (rol) where.rol = { [Op.like]: `%${rol}%` }
       }
