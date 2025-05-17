@@ -1,28 +1,49 @@
-// LibrosService.js - logica de negocio
-const { Libros } = require('../models')
+// LibrosService.js - lógica de negocio
+const { Libros } = require("../models");
+const { handleSequelizeError } = require("../utils/errorHandler");
 
 class LibrosService {
   async getAllLibros({ disponibilidad }) {
-    const where = {}
-    if (disponibilidad) where.disponibilidad = disponibilidad
-    return await Libros.findAll({ where })
+    try {
+      const where = {};
+      if (disponibilidad) where.disponibilidad = disponibilidad;
+      return await Libros.findAll({ where });
+    } catch (error) {
+      throw handleSequelizeError(error);
+    }
   }
 
   async getLibroByID(id) {
-    return await Libros.findOne({ where: { id } })
+    try {
+      return await Libros.findOne({ where: { id } });
+    } catch (error) {
+      throw handleSequelizeError(error);
+    }
   }
 
   async createLibro(libro) {
-    return await Libros.create(libro)
+    try {
+      return await Libros.create(libro);
+    } catch (error) {
+      throw handleSequelizeError(error);
+    }
   }
 
   async updateLibro(id, libro) {
-    return await Libros.update(libro, { where: { id } })
+    try {
+      return await Libros.update(libro, { where: { id } });
+    } catch (error) {
+      throw handleSequelizeError(error);
+    }
   }
 
   async deleteLibro(id) {
-    return await Libros.destroy({ where: { id } })
+    try {
+      return await Libros.destroy({ where: { id } });
+    } catch (error) {
+      throw handleSequelizeError(error);
+    }
   }
 }
 
-module.exports = new LibrosService()
+module.exports = new LibrosService();

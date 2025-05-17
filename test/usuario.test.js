@@ -2,23 +2,25 @@ const request = require("supertest");
 const app = require("../app");
 const UsuariosService = require("../services/usuariosService");
 const {
-  verificarRespuestaUsuarioCreado,
+  verificarRespuestaCreado,
   verificarStatusError,
-  verificarStatusDuplicado,
-  verificarStatusErrorServidor,
+  verificarStatusDuplicado
 } = require("../utils/errorTestCode.js");
 
 const usuarioValido = {
   nombre: "Test",
   apellido: "Test",
-  usuario: "TestUser7",
+  usuario: "Test" + Math.floor(Math.random() * 1000),
   password: "password123",
 };
+
+const campo = "usuario";
 
 describe("POST /usuarios", () => {
   it("debería crear un nuevo usuario con datos válidos, codigo 201", async () => {
     const response = await request(app).post("/usuarios").send(usuarioValido);
-    verificarRespuestaUsuarioCreado(response, 201);
+    console.log(usuarioValido)
+    verificarRespuestaCreado(response, 201, campo);
   });
 
   it("debería devolver un error 400 con datos inválidos, nombre con menos de 3 letras", async () => {
@@ -53,7 +55,7 @@ describe("POST /usuarios", () => {
     // Luego, intenta crear otro usuario con el mismo nombre de usuario
     const response = await request(app).post("/usuarios").send(usuarioValido);
 
-    verificarStatusDuplicado(response, 409);
+    verificarStatusDuplicado(response, 409, campo);
   });
 
   it("debería devolver un error 500 si ocurre un error en el servidor", async () => {

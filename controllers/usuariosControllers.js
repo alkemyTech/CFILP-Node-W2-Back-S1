@@ -1,6 +1,5 @@
 //Usuarios Controller - solicitudes HTTP
 const UsuariosService = require("../services/usuariosService");
-const { Usuarios } = require("../models"); // ruta según tu estructura
 
 class UsuariosController {
   //Obtener Usuarios

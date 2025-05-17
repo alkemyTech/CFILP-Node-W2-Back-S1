@@ -3,10 +3,10 @@ const { textoLimpio } = require("../utils/validarCampos.js");
 
 // Definir las validaciones para los campos de usuario
 const validaCamposUsuario = [
-  textoLimpio("nombre", 3, "alpha"),
-  textoLimpio("apellido", 3, "alpha"),
-  textoLimpio("usuario", 3, "alphanumeric"),
-  textoLimpio("password", 6, "alphanumeric"),
+  textoLimpio("nombre", 3, "alpha", 20),
+  textoLimpio("apellido", 3, "alpha", 20),
+  textoLimpio("usuario", 3, "alphanumeric",20),
+  textoLimpio("password", 6, "alphanumeric",20),
 
   // Middleware para verificar los errores después de las validaciones
   (req, res, next) => {

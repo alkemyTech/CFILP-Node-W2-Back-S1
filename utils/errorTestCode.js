@@ -1,6 +1,6 @@
-function verificarRespuestaUsuarioCreado(response, statusCodeEsperado) {
+function verificarRespuestaCreado(response, statusCodeEsperado, campo) {
   expect(response.status).toBe(statusCodeEsperado);
-  expect(response.body).toHaveProperty("usuario");
+  expect(response.body).toHaveProperty(campo);
 }
 
 function verificarStatusError(response, statusEsperado, campo = "errors") {
@@ -9,18 +9,13 @@ function verificarStatusError(response, statusEsperado, campo = "errors") {
   expect(response.body[campo].length).toBeGreaterThan(0);
 }
 
-function verificarStatusDuplicado(response, statusEsperado) {
+function verificarStatusDuplicado(response, statusEsperado, campo) {
   expect(response.status).toBe(statusEsperado);
   expect(response.body).toHaveProperty("error");
   expect(response.body.error).toHaveProperty("message");
-  expect(response.body.error.message).toBe("El usuario ya está en uso");
-}
-
-function verificarStatusErrorServidor(response, statusEsperado) {
-  expect(response.status).toBe(statusEsperado);
-  expect(response.body).toHaveProperty("message");
-  expect(response.body.message).toBe("Error del servidor");
+  expect(response.body.error.message).toBe(`El ${campo} ya está en uso`);
 }
 
 
-module.exports = { verificarRespuestaUsuarioCreado, verificarStatusError, verificarStatusDuplicado, verificarStatusErrorServidor };
+
+module.exports = { verificarRespuestaCreado, verificarStatusError, verificarStatusDuplicado };

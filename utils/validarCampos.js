@@ -10,7 +10,9 @@ const textoLimpio = (campo,min, tipo) => {
     let campoLimpio = body(campo)
         .trim()
         .notEmpty().withMessage(`El campo ${campo} es obligatorio`)
-        .isLength({ min }).withMessage(`El campo ${campo} debe tener al menos ${min} caracteres`);
+        .isLength({ min }).withMessage(`El campo ${campo} debe tener al menos ${min} caracteres`)
+        .isLength({ max: 20 }).withMessage(`El campo ${campo} no puede tener más de 20 caracteres`);
+        
 
     if (tipo === "alpha") {
         campoLimpio = campoLimpio.isAlpha("es-ES", { ignore: " " }).withMessage(`El campo ${campo} solo puede contener letras`);
