@@ -1,10 +1,7 @@
 //Usuarios Controller - solicitudes HTTP
-
-const UsuariosService = require('../services/usuariosService')
-
+const UsuariosService = require("../services/usuariosService")
 
 class UsuariosController {
-
   //Obtener Usuarios
   async getAllUsuarios(req, res, next) {
     try {
@@ -36,6 +33,11 @@ async deleteUsuarios (req, res) {
   res.send('Usuario Borrado')
 }
 
+  // Borrar Usuario
+  async deleteUsuarios(req, res) {
+    await UsuariosService.deleteUsuario(req.params.id)
+    res.send("Usuario Borrado")
+  }
 }
 
 module.exports = new UsuariosController()

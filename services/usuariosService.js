@@ -1,9 +1,8 @@
 // Usuarios Service - logica de negocio
-const { Usuarios } = require ('../models')
+const { Usuarios } = require("../models")
 const { handleSequelizeError } = require("../utils/errorHandler")
 
 const { Op } = require("sequelize")
-
 
 class UsuariosService {
 
@@ -47,7 +46,6 @@ class UsuariosService {
       throw handleSequelizeError(error)
     }
   }
-
 }
 
 module.exports = new UsuariosService ()
