@@ -1,11 +1,10 @@
 // Usuarios Service - logica de negocio
 const { Usuarios } = require("../models")
 const bcrypt = require("bcrypt")
+const { Op } = require("sequelize")
 
 const { handleSequelizeError, CustomError } = require("../utils/errorHandler")
 const { generateToken } = require("../utils/jwt")
-
-const { Op } = require("sequelize")
 
 class UsuariosService {
   async login({ usuario, password }) {
@@ -26,16 +25,13 @@ class UsuariosService {
     }
   }
 
-  async getAllUsuarios(body) {
+  async getAllUsuarios({ nombre, apellido, usuario, rol }) {
     try {
       const where = {}
-      if (body) {
-        const { nombre, apellido, usuario, rol } = body
-        if (nombre) where.nombre = { [Op.like]: `%${nombre}%` }
-        if (apellido) where.apellido = { [Op.like]: `%${apellidok}%` }
-        if (usuario) where.usuario = { [Op.like]: `%${usuario}%` }
-        if (rol) where.rol = { [Op.like]: `%${rol}%` }
-      }
+      if (nombre) where.nombre = { [Op.like]: `%${nombre}%` }
+      if (apellido) where.apellido = { [Op.like]: `%${apellido}%` }
+      if (usuario) where.usuario = { [Op.like]: `%${usuario}%` }
+      if (rol) where.rol = { [Op.like]: `%${rol}%` }
       return await Usuarios.findAll({ where })
     } catch (error) {
       throw handleSequelizeError(error)

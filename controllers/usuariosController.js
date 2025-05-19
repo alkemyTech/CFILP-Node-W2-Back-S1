@@ -34,7 +34,7 @@ class UsuariosController {
   //Obtener Usuarios
   async getAllUsuarios(req, res, next) {
     try {
-      const usuarios = await usuariosService.getAllUsuarios(req.body)
+      const usuarios = await usuariosService.getAllUsuarios(req.query)
 
       res.status(200).send(usuarios)
     } catch (error) {
@@ -64,9 +64,8 @@ class UsuariosController {
   // Actualizar Usuario
   async updateUsuario(req, res, next) {
     try {
-      const { id } = req.params
       const { nombre, apellido, usuarios } = req.body
-      await usuariosService.updateUsuario(id, { nombre, apellido, usuarios })
+      await usuariosService.updateUsuario(req.params.id, { nombre, apellido, usuarios })
 
       res.status(200).json({ message: "Usuario actualizado exitosamente" })
     } catch (error) {
