@@ -29,6 +29,43 @@
             "description": "OK"
           }
         }
+      },
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "isbn": {
+                  "example": "any"
+                },
+                "titulo": {
+                  "example": "any"
+                },
+                "autor": {
+                  "example": "any"
+                },
+                "anio": {
+                  "example": "any"
+                },
+                "categorias": {
+                  "example": "any"
+                },
+                "disponibilidad": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
       }
     },
     "/libros/{id}": {
@@ -47,17 +84,68 @@
             "description": "OK"
           }
         }
-      }
-    },
-    "/usuarios/": {
-      "get": {
+      },
+      "put": {
         "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "isbn": {
+                  "example": "any"
+                },
+                "titulo": {
+                  "example": "any"
+                },
+                "autor": {
+                  "example": "any"
+                },
+                "anio": {
+                  "example": "any"
+                },
+                "categorias": {
+                  "example": "any"
+                },
+                "disponibilidad": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
           }
         }
       },
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/usuarios/login": {
       "post": {
         "description": "",
         "parameters": [
@@ -67,12 +155,6 @@
             "schema": {
               "type": "object",
               "properties": {
-                "nombre": {
-                  "example": "any"
-                },
-                "apellido": {
-                  "example": "any"
-                },
                 "usuario": {
                   "example": "any"
                 },
@@ -90,6 +172,79 @@
         }
       }
     },
+    "/usuarios/perfil": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/usuarios/": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nombre": {
+                  "example": "any"
+                },
+                "apellido": {
+                  "example": "any"
+                },
+                "usuario": {
+                  "example": "any"
+                },
+                "password": {
+                  "example": "any"
+                },
+                "rol": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      }
+    },
     "/usuarios/{id}": {
       "put": {
         "description": "",
@@ -98,6 +253,11 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
             "type": "string"
           },
           {
@@ -132,6 +292,11 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
             "type": "string"
           }
         ],

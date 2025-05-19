@@ -4,7 +4,8 @@
   "description": "Repositorio Back Squad 1 | Node | CFI LP 25",
   "main": "app.js",
   "scripts": {
-    "start": "node --watch app.js"
+    "start": "node --watch app.js",
+    "swagger": "node swagger.js"
   },
   "repository": {
     "type": "git",
