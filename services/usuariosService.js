@@ -1,11 +1,10 @@
 // Usuarios Service - logica de negocio
 const { Usuarios } = require("../models")
 const bcrypt = require("bcrypt")
+const { Op } = require("sequelize")
 
 const { handleSequelizeError, CustomError } = require("../utils/errorHandler")
 const { generateToken } = require("../utils/jwt")
-
-const { Op } = require("sequelize")
 
 class UsuariosService {
   async login({ usuario, password }) {
