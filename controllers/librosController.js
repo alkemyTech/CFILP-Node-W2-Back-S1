@@ -1,43 +1,64 @@
 // LibrosController.js - solicitudes HTTP
-const LibrosService = require('../services/librosService')
+const LibrosService = require("../services/librosService")
 
 function mapCategorias(libroCategorias) {
   const categorias = ['Ficcion', 'Comedia', 'Infantil', 'Ciencia', 'Fantasia', 'Novela', 'Biografia']
   
-  return libroCategorias.split(',').map(categoria => categorias[categoria])
+  return libroCategorias.split(",").map(categoria => categorias[categoria])
 }
 
 class LibrosController {
   async getAllLibros(req, res) {
     const libros = await LibrosService.getAllLibros(req.query)
-    res.send(libros.map(libro => ({ ...libro.dataValues, categorias: mapCategorias(libro.categorias) })))
+    res.send(
+      libros.map((libro) => ({
+        ...libro.dataValues,
+        categorias: mapCategorias(libro.categorias)
+      }))
+    )
   }
 
   async getLibroByID(req, res) {
-    const { id } = req.params
-    const libro = await LibrosService.getLibroByID(id)
-    res.send({ ...libro.dataValues, categorias: mapCategorias(libro.categorias) })
+    const libro = await LibrosService.getLibroByID(req.params.id)
+    res.send({
+      ...libro.dataValues,
+      categorias: mapCategorias(libro.categorias)
+    })
   }
 
   // Crear Libros
-  async createLibro(req, res) { 
+  async createLibro(req, res) {
     const { isbn, titulo, autor, anio, categorias, disponibilidad } = req.body
-    await LibrosService.createLibro({ isbn, titulo, autor, anio, categorias, disponibilidad })
-    res.send('Creado')
+    await LibrosService.createLibro({
+      isbn,
+      titulo,
+      autor,
+      anio,
+      categorias,
+      disponibilidad
+    })
+    res.send({ message: "Libro creado con éxito" })
   }
-  
+
   // Actualizar Libros
-  async updateLibro (req, res) { 
+  async updateLibro(req, res) {
     const { id } = req.params
     const { isbn, titulo, autor, anio, categorias, disponibilidad } = req.body
-    await LibrosService.updateLibro(id, { isbn, titulo, autor, anio, categorias, disponibilidad })
-    res.send('Actualizado')
+    await LibrosService.updateLibro(id, {
+      isbn,
+      titulo,
+      autor,
+      anio,
+      categorias,
+      disponibilidad
+    })
+    res.send({ message: "Libro actualizado con éxito" })
   }
-  
+
   // Borrar Libros
-  async deleteLibro (req, res) {
+  async deleteLibro(req, res) {
     await LibrosService.deleteLibro(req.params.id)
-    res.send('Borrado')
+    res.send({ message: "Libro borrado con éxito" })
   }
 }
 

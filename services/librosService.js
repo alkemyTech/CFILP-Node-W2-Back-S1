@@ -1,23 +1,22 @@
 // LibrosService.js - logica de negocio
-const { Op } = require('sequelize')
-const { Libros } = require('../models')
-const { handleSequelizeError } = require('../utils/errorHandler')
+const { Libros } = require("../models")
+
+const { Op } = require("sequelize")
+const { handleSequelizeError } = require("../utils/errorHandler")
 
 class LibrosService {
-  async getAllLibros (body) {
-    try { const where = {}
-    if(body)
-    { 
-      const { isbn, titulo, categorias, autor, anio} = body
-      if (isbn) where.isbn = { [Op.like]: `%${ isbn }%` }
-      if (titulo) where.isbn = { [Op.like]: `%${ titulo }%` }
-      if (categorias) where.isbn = { [Op.like]: `%${ categorias }%` }
-      if (autor) where.isbn = { [Op.like]: `%${ autor }%` }
-      if (anio) where.isbn = { [Op.like]: `%${ anio }%` }
-    }
-    return await Libros.findAll( {where} )
-  } catch (error) {
-    throw handleSequelizeError(error)
+  async getAllLibros({ isbn, titulo, categorias, autor, anio, disponibilidad }) {
+    try {
+      const where = {}
+      if (isbn) where.isbn = { [Op.like]: `%${isbn}%` }
+      if (titulo) where.titulo = { [Op.like]: `%${titulo}%` }
+      if (autor) where.autor = { [Op.like]: `%${autor}%` }
+      if (anio) where.anio = { [Op.like]: `%${anio}%` }
+      if (categorias) where.categorias = { [Op.like]: `%${categorias}%` }
+      if (disponibilidad) where.disponibilidad = disponibilidad
+      return await Libros.findAll({ where })
+    } catch (error) {
+      throw handleSequelizeError(error)
     }
   }
   async getLibroByID(id) {
@@ -37,4 +36,3 @@ class LibrosService {
   }
 }
 module.exports = new LibrosService()
-
