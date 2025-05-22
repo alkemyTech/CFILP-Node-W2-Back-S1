@@ -11,6 +11,8 @@ const api = axios.create({
   }
 })
 
+let isAdmin = false
+
 // Iniciar sesión
 const handleLogin = async () => {
   console.log(chalk.cyan("\nIniciar sesión"))
@@ -21,7 +23,14 @@ const handleLogin = async () => {
     console.log("Iniciando sesión...")
     const response = await api.post("/usuarios/login", { usuario, password })
     api.defaults.headers.common["Authorization"] = "Bearer " + response.data.token
+    
+    const rolResponse = await api.get("/usuarios/perfil")
+    isAdmin = rolResponse.data.data.rol === "admin"
+
     console.log(chalk.green("Éxito: ") + chalk.white(response.data.message))
+
+    console.log(chalk.green.bold("\n¡Bienvenido!"))
+    console.log(chalk.white.bgGreen("¿Qué deseas hacer?"))
   } catch (error) {
     const apiError = handleApiError(error)
     console.log(chalk.red("Error: ") + chalk.white(apiError.message))
@@ -30,12 +39,13 @@ const handleLogin = async () => {
 
 // Ver perfil
 const handleProfile = async () => {
-  console.log(chalk.cyan("\nVer perfil"))
-
+  console.log(chalk.cyan("\nPerfil"))
   try {
     const response = await api.get("/usuarios/perfil")
-    console.log(chalk.green("Perfil:"))
-    console.log(chalk.white(JSON.stringify(response.data, null, 2)))
+    const { nombre, apellido, usuario } = response.data.data
+    if (isAdmin) console.log(chalk.white.bgGreen(" Eres Administrador "))
+    console.log(chalk.green("Nombre y Apellido: ") + chalk.white(`${nombre} ${apellido}`))
+    console.log(chalk.green("Usuario: ") + chalk.white(usuario))
   } catch (error) {
     const apiError = handleApiError(error)
     console.log(chalk.red("Error: ") + chalk.white(apiError.message))
@@ -54,7 +64,7 @@ const notValidOption = () => {
 const runMenu = async () => {
   process.stdout.write("\x1Bc")
   console.log(chalk.cyan.bold("Bienvenido a Alke-Biblioteca"))
-  
+
   while (true) {
     const isLogged = !!api.defaults.headers.common["Authorization"]
 
@@ -63,16 +73,28 @@ const runMenu = async () => {
       console.log(chalk.yellow("1. Ver perfil"))
       console.log(chalk.yellow("2. Cerrar sesión"))
       console.log(chalk.yellow("3. Salir"))
+      if (isAdmin) {
+        console.log(chalk.green("\n=== Menú Administrador ==="))
+        console.log(chalk.cyan("[Usuarios]"))
+        console.log(chalk.yellow("4. Crear Usuario"))
+        console.log(chalk.yellow("5. Editar Usuario"))
+        console.log(chalk.yellow("6. Eliminar Usuario"))
+        console.log(chalk.cyan("[Libros]"))
+        console.log(chalk.yellow("7. Crear Libro"))
+        console.log(chalk.yellow("8. Editar Libro"))
+        console.log(chalk.yellow("9. Eliminar Libro"))
+      }
     } else {
       console.log(chalk.yellow("1. Iniciar sesión"))
       console.log(chalk.yellow("2. Salir"))
     }
 
     const choice = readlineSync.question(
-      chalk.yellow("Selecciona una opcion: ")
+      chalk.yellow("\nSelecciona una opcion: ")
     )
 
     process.stdout.write("\x1Bc")
+    if (isLogged) console.log(chalk.bgGreen.bold("====== [ Alke-Biblioteca ] ======"))
 
     if (isLogged) {
       switch (choice) {
