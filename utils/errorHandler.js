@@ -29,4 +29,15 @@ const handleSequelizeError = (error) => {
   return new CustomError('Error interno del servidor', 500)
 }
 
-module.exports = { CustomError, handleSequelizeError }
+// Manejar errores de axios
+const handleApiError = (error) => {
+  if (error.response) {
+    return new CustomError(
+      error.response.data.error?.message || 'Error en la solicitud',
+      error.response.status
+    )
+  }
+  return new CustomError('Error de conexión con el servidor', 500)
+}
+
+module.exports = { CustomError, handleSequelizeError, handleApiError }
