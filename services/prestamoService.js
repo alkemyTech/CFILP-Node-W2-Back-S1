@@ -19,19 +19,21 @@ class PrestamoService {
     return prestamos;
   }
 
-  async crearPrestamo({ usuarioId, titulo }) {
-    const libro = await Libros.findOne({ where: { titulo } });
+  async crearPrestamo({ usuarioId, libroId }) {
+    const libro = await Libros.findOne({ where: { id: libroId } });
 
     if (!libro) throw new Error("Libro no encontrado");
-    if (!libro.disponibilidad) throw new Error("Libro no disponible");
+    if (!libro.disponibilidad || libro.disponibilidad <= 0)
+      throw new Error("Libro no disponible");
 
     const prestamo = await Prestamo.create({
       usuarioId,
-      libroId: libro.id,
+      libroId,
       fechaPrestamo: fechaOperacion,
       estado: "activo",
     });
 
+    // Actualiza la disponibilidad restando 1
     await libro.update({ disponibilidad: libro.disponibilidad - 1 });
 
     return prestamo;
@@ -40,13 +42,12 @@ class PrestamoService {
   async devolverPrestamo(prestamoId) {
     const prestamo = await Prestamo.findByPk(prestamoId);
     if (!prestamo) throw new Error("Préstamo no encontrado");
-    if (prestamo.estado === "devuelto")
-      throw new Error("Préstamo ya fue devuelto");
+    if (prestamo.estado === "devuelto") throw new Error("Préstamo ya fue devuelto");
 
-    // Actualizar estado del préstamo
+    // Actualizar estado y fecha de devolución
     await prestamo.update({
       estado: "devuelto",
-      fechaDevolucion: fechaOperacion, // Asignar la fecha de devolución
+      fechaDevolucion: fechaOperacion,
     });
 
     // Actualizar disponibilidad del libro asociado
