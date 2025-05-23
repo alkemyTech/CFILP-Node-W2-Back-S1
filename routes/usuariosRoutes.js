@@ -2,7 +2,7 @@
 const express = require ("express")
 const usuariosController = require('../controllers/usuariosController')
 
-const { validateUserCreate, validateLogin } = require("../middleware/userMiddleware")
+const { validaCamposUsuario, validateLogin } = require("../middleware/userMiddleware")
 const authMiddleware = require("../middleware/authMiddleware")
 
 const usuariosRouter = express.Router()
@@ -20,10 +20,10 @@ usuariosRouter.get('/perfil', usuariosController.perfilUsuario)
 usuariosRouter.get('/', usuariosController.getAllUsuarios)
 
 // Crear un usuario
-usuariosRouter.post('/', validateUserCreate, usuariosController.createUsuario)
+usuariosRouter.post('/', validaCamposUsuario, usuariosController.createUsuario)
 
 // Modificar un usuario
-usuariosRouter.put('/:id', usuariosController.updateUsuario)
+usuariosRouter.put('/:id', validaCamposUsuario, usuariosController.updateUsuario)
 
 // Borrar un usuario
 usuariosRouter.delete('/:id', usuariosController.deleteUsuario)
