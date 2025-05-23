@@ -29,4 +29,3 @@ const validacionCamposLibro = [
 ];
 
 module.exports = validacionCamposLibro
-

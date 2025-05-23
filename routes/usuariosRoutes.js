@@ -1,23 +1,21 @@
 // UsuarioRoutes - endpoints
-const express = require ("express")
-const UsuariosController = require('../controllers/usuariosControllers')
-const  validateUser  = require("../middleware/usuarioMiddleware") // valida con express-validator
+const express = require("express")
+const usuariosController = require("../controllers/usuariosControllers")
 
-const { validateUserCreate } = require("../middleware/userMiddleware") // este deberia borrarse
+const validateUser = require("../middleware/userMiddleware")
 
-const UsuarioRouter = express.Router()
+const usuariosRouter = express.Router()
 
-// Consultar todos los Usuarios 
-UsuarioRouter.get('/',  UsuariosController.getAllUsuarios)
+// Consultar todos los Usuarios
+usuariosRouter.get('/', usuariosController.getAllUsuarios)
 
 // Crear un usuario
-
-UsuarioRouter.post('/', validateUser, UsuariosController.createUsuario)
+usuariosRouter.post('/', validateUser, usuariosController.createUsuario)
 
 // Modificar un usuario
-UsuarioRouter.put('/:id', UsuariosController.updateUsuario)
+usuariosRouter.put('/:id', validateUser, usuariosController.updateUsuario)
 
 // Borrar un usuario
-UsuarioRouter.delete('/:id', UsuariosController.deleteUsuario)
+usuariosRouter.delete('/:id', usuariosController.deleteUsuario)
 
-module.exports = UsuarioRouter
+module.exports = usuariosRouter

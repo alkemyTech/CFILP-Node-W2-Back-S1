@@ -1,8 +1,7 @@
 // LibrosRoutes.js - endpoints
 const express = require('express')
 const LibrosController = require('../controllers/librosController')
-const  validateLibro = require('../middleware/libroMiddleware') // valida con express-validator
-
+const validateLibro = require('../middleware/libroMiddleware') // valida con express-validator
 
 const librosRouter = express.Router()
 
@@ -16,7 +15,7 @@ librosRouter.get('/:id', LibrosController.getLibroByID)
 librosRouter.post('/', validateLibro, LibrosController.createLibro)
 
 // Modificar un libro
-librosRouter.put('/:id', LibrosController.updateLibro)
+librosRouter.put('/:id', validateLibro, LibrosController.updateLibro)
 
 // Borrar un libro
 librosRouter.delete('/:id', LibrosController.deleteLibro)
