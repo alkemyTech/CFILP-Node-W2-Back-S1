@@ -3,6 +3,7 @@ const app = express()
 const PORT = process.env.PORT || 3000
 const librosRoutes = require('./routes/librosRoutes')
 const usuariosRoutes = require('./routes/usuariosRoutes')
+const prestamoRoutes = require('./routes/prestamoRoutes')
 
 const errorMiddleware = require('./middleware/errorMiddleware')
 
@@ -21,6 +22,8 @@ app.get('/', (req, res) => {
 app.use('/libros', librosRoutes)
 
 app.use('/usuarios', usuariosRoutes)
+
+app.use('/prestamos', prestamoRoutes)
 
 // Middleware de errores debe ir al final para recibir todos los errores
 app.use(errorMiddleware)
