@@ -15,11 +15,10 @@ class PrestamoController {
       const usuarioId = req.user.id;
       const libroId = req.body.id;
 
-      if (!libroId) {
-        return res.status(400).json({ error: "El id del libro es obligatorio" });
-      }
-
-      const prestamoCreado = await PrestamoService.crearPrestamo({ usuarioId, libroId });
+      const prestamoCreado = await PrestamoService.crearPrestamo({
+        usuarioId,
+        libroId,
+      });
 
       res.status(201).json({
         message: "Préstamo registrado correctamente",
@@ -33,10 +32,6 @@ class PrestamoController {
   async devolverLibro(req, res, next) {
     try {
       const { prestamoId } = req.params;
-
-      if (!prestamoId) {
-        return res.status(400).json({ error: "El id del préstamo es obligatorio" });
-      }
 
       await PrestamoService.devolverPrestamo(prestamoId);
 

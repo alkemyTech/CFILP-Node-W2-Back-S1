@@ -11,6 +11,7 @@ const validateLogin = (req, res, next) => {
   }
 
   next()
+
 }
 
 // Definir las validaciones para los campos de usuario

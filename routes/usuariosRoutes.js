@@ -1,7 +1,6 @@
 // UsuarioRoutes - endpoints
 const express = require ("express")
 const usuariosController = require('../controllers/usuariosController')
-
 const { validaCamposUsuario, validateLogin } = require("../middleware/userMiddleware")
 const authMiddleware = require("../middleware/authMiddleware")
 
@@ -11,7 +10,7 @@ const usuariosRouter = express.Router()
 usuariosRouter.post('/login', validateLogin, usuariosController.loginUsuario)
 
 // Crear un usuario
-usuariosRouter.post('/', validateUserCreate, usuariosController.createUsuario)
+usuariosRouter.post('/', validaCamposUsuario, usuariosController.createUsuario)
 
 // Todas las siguientes rutas requieren autenticación
 usuariosRouter.use(authMiddleware)
