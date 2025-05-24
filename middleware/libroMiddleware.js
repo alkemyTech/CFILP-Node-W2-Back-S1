@@ -1,17 +1,33 @@
+const { validationResult } = require("express-validator")
+
 const { CustomError } = require('../utils/errorHandler')
+const { textoLimpio } = require("../utils/validarCampos.js")
 
-const validateLibroCreate = (req, res, next) => {
-  const { isbn, titulo, autor, anio, categorias, disponibilidad } = req.body
+const validacionCamposLibro = [
+    textoLimpio('isbn', 10, 'alphanumeric'),
+    textoLimpio('titulo', 3, 'alpha'),
+    textoLimpio('autor', 3, 'alpha'),
+    textoLimpio('anio', 4, 'numeric'), //tomando que anio la manejamos como un numero
+    textoLimpio('categorias', 1, 'numeric'), //tomando que categoria la manejamos como un numero
+    textoLimpio('disponibilidad', 1, 'numeric'), //tomando que disponibilidad la manejamos como un numero
 
-  if (!isbn || !titulo || !autor || !anio || !categorias || !disponibilidad) {
-    const needCampos = Object.keys({
-      isbn, titulo, autor, anio, categorias, disponibilidad
-    }).filter(campo => !req.body[campo])
+     // Middleware para verificar los errores después de las validaciones
+      (req, res, next) => {
+        const errors = validationResult(req)
+    
+        // Si hay errores, agruparlos y devolverlos juntos
+        if (!errors.isEmpty()) {
+          return res.status(400).json({
+            errors: errors.array().map(err => ({
+              field: err.param,
+              message: err.msg
+            }))
+          })
+        }
+    
+        // Si no hay errores, continuar con el siguiente middleware o controlador
+        next()
+      }
+]
 
-    throw new CustomError(`Los campos [${needCampos.join(', ')}] son obligatorios`, 400)
-  }
-
-  next()
-}
-
-module.exports = { validateLibroCreate }
+module.exports = { validacionCamposLibro }
