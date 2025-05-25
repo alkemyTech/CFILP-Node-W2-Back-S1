@@ -10,6 +10,19 @@ class PrestamoController {
     }
   }
 
+  async getPrestamoById(req, res, next) {
+    try {
+      const { prestamoId } = req.params;
+      const prestamo = await PrestamoService.getPrestamoById(prestamoId);
+      if (!prestamo) {
+        return res.status(404).json({ message: "Préstamo no encontrado" });
+      }
+      res.status(200).json(prestamo);
+    } catch (error) {
+      next(error);
+    }
+  }
+
   async solicitarPrestamo(req, res, next) {
     try {
       const usuarioId = req.user.id;
@@ -40,6 +53,50 @@ class PrestamoController {
       next(error);
     }
   }
+
+  async actualizarPrestamo(req, res, next) {
+    try {
+      const { prestamoId } = req.params;
+      const datosActualizados = req.body;
+
+      const prestamoActualizado = await PrestamoService.actualizarPrestamo(prestamoId, datosActualizados);
+
+      res.status(200).json({
+        message: "Préstamo actualizado correctamente",
+        prestamo: prestamoActualizado,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async eliminarPrestamo(req, res, next) {
+    try {
+      const { prestamoId } = req.params;
+
+      await PrestamoService.eliminarPrestamo(prestamoId);
+
+      res.status(200).json({ message: "Préstamo eliminado correctamente" });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+
+async obternerPrestamosPorUsuario(req, res, next) {
+    try {
+      const usuarioId = req.user.id;
+
+      const prestamos = await PrestamoService.obtenerPrestamosPorUsuario(usuarioId);
+
+      res.status(200).json(prestamos);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+
+
 }
 
 module.exports = new PrestamoController();

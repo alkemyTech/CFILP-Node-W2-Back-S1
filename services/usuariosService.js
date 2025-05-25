@@ -38,6 +38,7 @@ class UsuariosService {
     }
   }
 
+
   async createUsuario(usuario) {
     try {
       const hashedPassword = await bcrypt.hash(usuario.password, 10)

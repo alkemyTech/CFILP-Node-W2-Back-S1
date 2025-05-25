@@ -19,6 +19,29 @@ class PrestamoService {
     return prestamos;
   }
 
+  async obtenerPrestamosPorUsuario(usuarioId) {
+    return await Prestamo.findAll({ where: { usuarioId } });
+  }
+
+  async getPrestamoById(prestamoId) {
+  const prestamo = await Prestamo.findByPk(prestamoId, {
+    include: [
+      {
+        model: Usuarios,
+        as: "usuario",
+        attributes: ["id", "nombre", "usuario"],
+      },
+      {
+        model: Libros,
+        as: "libro",
+        attributes: ["id", "titulo", "autor"],
+      },
+    ],
+  });
+  return prestamo;
+}
+
+
   async crearPrestamo({ usuarioId, libroId }) {
     const libro = await Libros.findOne({ where: { id: libroId } });
 
@@ -42,7 +65,8 @@ class PrestamoService {
   async devolverPrestamo(prestamoId) {
     const prestamo = await Prestamo.findByPk(prestamoId);
     if (!prestamo) throw new Error("Préstamo no encontrado");
-    if (prestamo.estado === "devuelto") throw new Error("Préstamo ya fue devuelto");
+    if (prestamo.estado === "devuelto")
+      throw new Error("Préstamo ya fue devuelto");
 
     // Actualizar estado y fecha de devolución
     await prestamo.update({
@@ -57,6 +81,25 @@ class PrestamoService {
     }
 
     return prestamo;
+  }
+
+  async actualizarPrestamo(id, datos) {
+    const prestamo = await Prestamo.findByPk(id);
+    if (!prestamo) {
+      throw new Error("Préstamo no encontrado");
+    }
+
+    await prestamo.update(datos);
+    return prestamo;
+  }
+
+  async eliminarPrestamo(id) {
+    const prestamo = await Prestamo.findByPk(id);
+    if (!prestamo) {
+      throw new Error("Préstamo no encontrado");
+    }
+
+    await prestamo.destroy();
   }
 }
 
