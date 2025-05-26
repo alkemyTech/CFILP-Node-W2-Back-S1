@@ -1,5 +1,5 @@
 // UsuarioRoutes - endpoints
-const express = require ("express")
+const express = require("express")
 const usuariosController = require('../controllers/usuariosController')
 const { validaCamposUsuario, validateLogin } = require("../middleware/userMiddleware")
 const authMiddleware = require("../middleware/authMiddleware")
@@ -20,7 +20,6 @@ usuariosRouter.get('/perfil', usuariosController.perfilUsuario)
 
 // Consultar todos los Usuarios
 usuariosRouter.get('/', usuariosController.getAllUsuarios)
-
 
 // Modificar un usuario
 usuariosRouter.put('/:id', validaCamposUsuario, usuariosController.updateUsuario)

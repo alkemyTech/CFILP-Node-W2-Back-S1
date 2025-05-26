@@ -82,8 +82,7 @@ class PrestamoController {
     }
   }
 
-
-async obternerPrestamosPorUsuario(req, res, next) {
+  async obternerPrestamosPorUsuario(req, res, next) {
     try {
       const usuarioId = req.user.id;
 
@@ -94,9 +93,6 @@ async obternerPrestamosPorUsuario(req, res, next) {
       next(error);
     }
   }
-
-
-
 }
 
 module.exports = new PrestamoController();
