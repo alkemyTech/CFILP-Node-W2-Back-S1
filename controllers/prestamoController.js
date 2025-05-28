@@ -59,7 +59,10 @@ class PrestamoController {
       const { prestamoId } = req.params;
       const datosActualizados = req.body;
 
-      const prestamoActualizado = await PrestamoService.actualizarPrestamo(prestamoId, datosActualizados);
+      const prestamoActualizado = await PrestamoService.actualizarPrestamo(
+        prestamoId,
+        datosActualizados
+      );
 
       res.status(200).json({
         message: "Préstamo actualizado correctamente",
@@ -83,10 +86,21 @@ class PrestamoController {
   }
 
   async obternerPrestamosPorUsuario(req, res, next) {
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+    console.log("Obteniendo préstamos por usuario");
+    {
+    }
+=======
+>>>>>>> b125c6f9f6033d18e56ec459cf74276cc25b909d
+>>>>>>> Stashed changes
     try {
       const usuarioId = req.user.id;
 
-      const prestamos = await PrestamoService.obtenerPrestamosPorUsuario(usuarioId);
+      const prestamos = await PrestamoService.obtenerPrestamosPorUsuario(
+        usuarioId
+      );
 
       res.status(200).json(prestamos);
     } catch (error) {

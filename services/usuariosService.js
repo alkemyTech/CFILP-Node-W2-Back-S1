@@ -49,13 +49,27 @@ class UsuariosService {
     }
   }
 
-  async updateUsuario(id, usuario) {
-    try {
-      return await Usuarios.update(usuario, { where: { id } })
-    } catch (error) {
-      throw handleSequelizeError(error)
+async updateUsuario(id, nuevosDatos) {
+  try {
+    const usuarioExistente = await Usuarios.findByPk(id);
+
+    if (!usuarioExistente) {
+      throw new CustomError("Usuario no encontrado", 404);
     }
+
+    const datosActualizados = {
+      ...usuarioExistente.toJSON(),
+      ...nuevosDatos
+    };
+
+    await usuarioExistente.update(datosActualizados);
+
+    return usuarioExistente;
+  } catch (error) {
+    throw handleSequelizeError(error);
   }
+}
+
 
   async deleteUsuario(id) {
     try {

@@ -10,7 +10,21 @@ const { verificarRol } = require("../middleware/verificarRolMiddleware")
 prestamoRouter.use(authMiddleware)
 
 // Rutas de préstamo
+<<<<<<< Updated upstream
 prestamoRouter.get("/", verificarRol("admin"), prestamoController.getAllPrestamos)
+=======
+<<<<<<< HEAD
+prestamoRoute.get("/", verificarRol("admin"), PrestamoController.getAllPrestamos);
+prestamoRoute.get("/usuarioPrestamos", PrestamoController.obternerPrestamosPorUsuario);
+prestamoRoute.get("/:prestamoId", verificarRol("admin"), PrestamoController.getPrestamoById);
+prestamoRoute.post("/", validaPrestamo, PrestamoController.solicitarPrestamo);
+prestamoRoute.post("/:prestamoId/devolver", PrestamoController.devolverLibro);
+prestamoRoute.put( "/:prestamoId", verificarRol("admin"), PrestamoController.actualizarPrestamo);
+prestamoRoute.delete("/:prestamoId", verificarRol("admin"), PrestamoController.eliminarPrestamo);
+=======
+prestamoRouter.get("/", verificarRol("admin"), prestamoController.getAllPrestamos)
+>>>>>>> b125c6f9f6033d18e56ec459cf74276cc25b909d
+>>>>>>> Stashed changes
 
 prestamoRouter.get("/:prestamoId", verificarRol("admin"), prestamoController.getPrestamoById)
 

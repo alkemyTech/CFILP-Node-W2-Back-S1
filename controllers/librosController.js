@@ -1,44 +1,53 @@
 // LibrosController.js - solicitudes HTTP
-const LibrosService = require("../services/librosService")
+const LibrosService = require("../services/librosService");
 
 function mapCategorias(libroCategorias) {
-  const categorias = ["Ficcion", "Comedia", "Infantil", "Ciencia", "Fantasia", "Novela", "Biografia"]
-  return libroCategorias.split(",").map((categoria) => categorias[categoria])
+  const categorias = [
+    "Ficcion",
+    "Comedia",
+    "Infantil",
+    "Ciencia",
+    "Fantasia",
+    "Novela",
+    "Biografia",
+  ];
+  return libroCategorias.split(",").map((categoria) => categorias[categoria]);
 }
 
 class LibrosController {
   async getAllLibros(req, res, next) {
     try {
-      const libros = await LibrosService.getAllLibros(req.query)
+      const libros = await LibrosService.getAllLibros(req.query);
 
       res.status(200).send(
         libros.map((libro) => ({
           ...libro.dataValues,
           categorias: mapCategorias(libro.categorias),
         }))
-      )
+      );
     } catch (error) {
-      next(error)
+      next(error);
     }
   }
 
   async getLibroByID(req, res, next) {
     try {
-      const libro = await LibrosService.getLibroByID(req.params.id)
+      const libro = await LibrosService.getLibroByID(req.params.id);
 
       res.status(200).send({
         ...libro.dataValues,
         categorias: mapCategorias(libro.categorias),
-      })
+      });
     } catch (error) {
-      next(error)
+      next(error);
     }
   }
 
   // Crear Libro
   async createLibro(req, res, next) {
     try {
-      const { isbn, titulo, autor, anio, categorias, disponibilidad } = req.body
+      const { isbn, titulo, autor, anio, categorias, disponibilidad } =
+        req.body;
       const nuevoLibro = await LibrosService.createLibro({
         isbn,
         titulo,
@@ -46,48 +55,49 @@ class LibrosController {
         anio,
         categorias,
         disponibilidad,
-      })
+      });
 
       // 201 Created: Recurso creado
       res.status(201).json({
         message: "Libro creado correctamente",
         // Devolver usuario sin la contraseña
-        libro: nuevoLibro
-      })
+        libro: nuevoLibro,
+      });
     } catch (error) {
-      next(error)
+      next(error);
     }
   }
 
   // Actualizar Libros
   async updateLibro(req, res, next) {
     try {
-      const { isbn, titulo, autor, anio, categorias, disponibilidad } = req.body
+      const { isbn, titulo, autor, anio, categorias, disponibilidad } =
+        req.body;
       await LibrosService.updateLibro(req.params.id, {
         isbn,
         titulo,
         autor,
         anio,
         categorias,
-        disponibilidad
-      })
+        disponibilidad,
+      });
 
-      res.status(200).json({ message: "Libro actualizado correctamente" })
+      res.status(200).json({ message: "Libro actualizado correctamente" });
     } catch (error) {
-      next(error)
+      next(error);
     }
   }
 
   // Borrar Libros
   async deleteLibro(req, res, next) {
     try {
-      await LibrosService.deleteLibro(req.params.id)
+      await LibrosService.deleteLibro(req.params.id);
 
-      res.status(200).json({ message: "Libro eliminado exitosamente" })
+      res.status(200).json({ message: "Libro eliminado exitosamente" });
     } catch (error) {
-      next(error)
+      next(error);
     }
   }
 }
 
-module.exports = new LibrosController()
+module.exports = new LibrosController();
