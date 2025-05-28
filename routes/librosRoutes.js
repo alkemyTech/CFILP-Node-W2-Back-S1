@@ -2,7 +2,7 @@
 const express = require('express')
 const LibrosController = require('../controllers/librosController')
 
-const { validateLibroCreate } = require('../middleware/libroMiddleware')
+const { validacionCamposLibro } = require('../middleware/libroMiddleware')
 
 const librosRouter = express.Router()
 
@@ -13,10 +13,10 @@ librosRouter.get('/', LibrosController.getAllLibros)
 librosRouter.get('/:id', LibrosController.getLibroByID)
 
 // Crear un libro
-librosRouter.post('/', validateLibroCreate, LibrosController.createLibro)
+librosRouter.post('/', validacionCamposLibro, LibrosController.createLibro)
 
 // Modificar un libro
-librosRouter.put('/:id', LibrosController.updateLibro)
+librosRouter.put('/:id', validacionCamposLibro, LibrosController.updateLibro)
 
 // Borrar un libro
 librosRouter.delete('/:id', LibrosController.deleteLibro)

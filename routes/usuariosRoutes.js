@@ -1,14 +1,16 @@
 // UsuarioRoutes - endpoints
-const express = require ("express")
+const express = require("express")
 const usuariosController = require('../controllers/usuariosController')
-
-const { validateUserCreate, validateLogin } = require("../middleware/userMiddleware")
+const { validaCamposUsuario, validateLogin } = require("../middleware/userMiddleware")
 const authMiddleware = require("../middleware/authMiddleware")
 
 const usuariosRouter = express.Router()
 
 // Logear para obtener un token
 usuariosRouter.post('/login', validateLogin, usuariosController.loginUsuario)
+
+// Crear un usuario
+usuariosRouter.post('/', validaCamposUsuario, usuariosController.createUsuario)
 
 // Todas las siguientes rutas requieren autenticación
 usuariosRouter.use(authMiddleware)
@@ -19,11 +21,8 @@ usuariosRouter.get('/perfil', usuariosController.perfilUsuario)
 // Consultar todos los Usuarios
 usuariosRouter.get('/', usuariosController.getAllUsuarios)
 
-// Crear un usuario
-usuariosRouter.post('/', validateUserCreate, usuariosController.createUsuario)
-
 // Modificar un usuario
-usuariosRouter.put('/:id', usuariosController.updateUsuario)
+usuariosRouter.put('/:id', validaCamposUsuario, usuariosController.updateUsuario)
 
 // Borrar un usuario
 usuariosRouter.delete('/:id', usuariosController.deleteUsuario)
