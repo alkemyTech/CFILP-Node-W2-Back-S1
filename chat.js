@@ -1,196 +1,201 @@
-const axios = require("axios")
-const chalk = require("chalk")
-const readlineSync = require("readline-sync")
-const { handleApiError } = require("./utils/errorHandler")
+const inquirer = require('inquirer')
+const axios = require('axios')
+const chalk = require('chalk')
 
-const formatError = (err) => {
-  console.log(chalk.red("Error: ") + chalk.white(handleApiError(err).message))
+const API_URL = 'http://localhost:3000'
+
+let user = {}
+
+function formatError(error, message) {
+  console.error(chalk.red(message, error.response?.data?.message || error.message))
 }
 
-const api = axios.create({
-  baseURL: "http://localhost:3000",
-  timeout: 50000,
-  headers: {
-    "Content-Type": "application/json"
+function inquirerPrompt(type, name, message, opt = {}) {
+  if (type === 'continue') {
+    return {
+      type: 'input',
+      name: 'continue',
+      message: 'Presiona Enter para continuar...'
+    }
   }
-})
+  return { type, name, message, ...opt }
+}
 
-let isAdmin = false
-let SCREEN = 'HOME'
+function clearTerminal() {
+  // Código ANSI para limpiar la terminal
+  process.stdout.write('\x1Bc')
+
+  // Titulo
+  console.log(chalk.blue.bold('=== Alke-Biblioteca ===\n'))
+}
 
 // Iniciar sesión
-const handleLogin = async () => {
-  SCREEN = 'LOGIN'
-  console.log(chalk.cyan("\nIniciar sesión"))
-  const usuario = readlineSync.question(chalk.yellow("Usuario: "))
-  const password = readlineSync.question(chalk.yellow("Contrasena: "), { hideEchoBack: true })
+async function handleLogin() {
+  clearTerminal()
+  console.log(chalk.blue.bold('=== Iniciar Sesión ==='))
+  const { usuario, password } = await inquirer.prompt([
+    inquirerPrompt('input', 'usuario', 'Usuario:'),
+    inquirerPrompt('password', 'password', 'Contraseña:', { mask: '*' })
+  ])
 
   try {
-    console.log("Iniciando sesión...")
-    const response = await api.post("/usuarios/login", { usuario, password })
-    api.defaults.headers.common["Authorization"] = "Bearer " + response.data.token
-    
-    const rolResponse = await api.get("/usuarios/perfil")
-    isAdmin = rolResponse.data.data.rol === "admin"
-
-    console.log(chalk.green("Éxito: ") + chalk.white(response.data.message))
-
-    console.log(chalk.green.bold("\n¡Bienvenido!"))
-    console.log(chalk.white.bgGreen("¿Qué deseas hacer?"))
+    const response = await axios.post(`${API_URL}/usuarios/login`, { usuario, password })
+    user = { ...response.data.user, token: response.data.token }
+    console.log(chalk.green('¡Bienvenido!'))
+    return true // Login exitoso
   } catch (error) {
-    formatError(error)
+    formatError(error, 'Error al iniciar sesión:')
+    return false // Login falló
+  }
+}
+
+// Ver librería
+async function viewLibrary() {
+  clearTerminal()
+  console.log(chalk.blue.bold('=== Librería ==='))
+  try {
+    const response = await axios.get(`${API_URL}/libros`)
+    const books = response.data
+    books.forEach(book => {
+      console.log(chalk.cyan(`- ${book.titulo} (ID: ${book.id})`))
+    })
+  } catch (error) {
+    formatError(error, 'Error al obtener libros:')
+  }
+}
+
+// Ver mi biblioteca
+async function viewMyLibrary() {
+  clearTerminal()
+  console.log(chalk.blue.bold('=== Mi Biblioteca ==='))
+  try {
+    // const response = await axios.get(`${API_URL}/usuarios/${user.id}/libros`, {
+    //   headers: { Authorization: `Bearer ${TOKEN}` },
+    // })
+    const myBooks = [] //response.data
+    if (myBooks.length === 0) {
+      console.log(chalk.yellow('No tienes libros en tu biblioteca.'))
+    } else {
+      myBooks.forEach(book => {
+        console.log(chalk.cyan(`- ${book.titulo} (ID: ${book.id})`))
+      })
+    }
+  } catch (error) {
+    formatError(error, 'Error al obtener tu biblioteca:')
+  }
+}
+
+// Añadir un libro a mi biblioteca
+async function addBookToLibrary() {
+  clearTerminal()
+  console.log(chalk.blue.bold('=== Añadir Libro ==='))
+  const { libroID } = await inquirer.prompt([
+    inquirerPrompt('input', 'libroID', 'Ingresa el ID del libro a añadir:')
+  ])
+
+  try {
+    // await axios.post(
+    //   `${API_URL}/usuarios/${user.id}/libros`,
+    //   { bookId: answers.bookId },
+    //   { headers: { Authorization: `Bearer ${TOKEN}` } }
+    // )
+    console.log(chalk.green('Libro añadido a tu biblioteca.'+ libroID))
+  } catch (error) {
+    formatError(error, 'Error al añadir libro:')
   }
 }
 
 // Ver perfil
-const handleProfile = async () => {
-  SCREEN = 'PERFIL'
-  console.log(chalk.cyan("\nPerfil"))
+async function viewProfile() {
+  clearTerminal()
+  console.log(chalk.blue.bold('=== Mi Perfil ==='))
   try {
-    const response = await api.get("/usuarios/perfil")
-    const { nombre, apellido, usuario } = response.data.data
-    if (isAdmin) console.log(chalk.white.bgGreen(" Eres Administrador "))
-    console.log(chalk.green("Nombre y Apellido: ") + chalk.white(`${nombre} ${apellido}`))
-    console.log(chalk.green("Usuario: ") + chalk.white(usuario))
+    console.log(chalk.cyan(`Nombre: ${user.nombre}`))
+    console.log(chalk.cyan(`Usuario: ${user.usuario}`))
   } catch (error) {
-    formatError(error)
+    formatError(error, 'Error al obtener perfil:')
   }
 }
 
-const handleLogout = () => {
-  SCREEN = 'HOME'
-  console.log(chalk.cyan("Cerrando sesión..."))
-  api.defaults.headers.common["Authorization"] = null
-}
-
-const showLibrary = async (key = null) => {
-  SCREEN = 'LIBRERIA'
-  console.log(chalk.cyan("Librería"))
-  console.log(chalk.yellow("[S] Seleccionar un libro"))
-  console.log(chalk.yellow("[M] Mis libros"))
-  try {
-    const response = await api.get("/libros")
-    for (const book of response.data) {
-      console.log(
-        chalk.green("\n--- Libro"), chalk.yellow(`ID: ${book.id}`), chalk.green("---")
-      )
-      console.log(chalk.green("Título: ") + chalk.white(book.titulo))
-      console.log(chalk.green("Autor: ") + chalk.white(book.autor))
-      console.log(chalk.green("Año: ") + chalk.white(book.anio))
-      console.log(chalk.green("Categorias: ") + chalk.white(book.categorias))
-    }
-    if (key === 's') {
-      console.log(chalk.blue("\nSelecciona un libro"))
-      const id = readlineSync.question(chalk.yellow("ID del libro: "))
-      try {
-        const response = await api.get(`/libros/${id}`)
-        console.log(chalk.green("Libro seleccionado: ") + chalk.white(response.data.titulo))
-        console.log(chalk.yellow("\n[1] Agregar a Mis Libros"))
-        console.log(chalk.yellow("[2] Cancelar"))
-        const option = readlineSync.question(chalk.cyan("Selecciona una opcion: "))
-        if (option === '1') {
-          try {
-            const response = await api.post(`/libros/${id}/agregar`)
-            console.log(chalk.green("Éxito: ") + chalk.white(response.data.message))
-          } catch (error) {
-            formatError(error)
-          }
-        } else {
-          console.log(chalk.red("Operación cancelada"))
-        }
-      } catch (error) {
-        formatError(error)
-      }
-    }
-  } catch (error) {
-    formatError(error)
-  }
-}
-
-const exit = () => {
-  SCREEN = 'HOME'
-  console.log(chalk.cyan("¡Adiós!"))
-  process.exit(0)
-}
-
-const otherOption = async (key) => {
-  if (SCREEN === 'LIBRERIA') {
-    await showLibrary(key)
-  }
-}
-
-const notValidOption = () => {
-  console.log(chalk.red("Opción inválida, intenta de nuevo."))
-}
-
-const showMenu = (isLogged) => {
-  console.log(chalk.cyan.bold("\n=== Menú ==="))
-  if (isLogged) {
-    console.log(chalk.yellow("[1] Librería"))
-    console.log(chalk.yellow("[2] Ver perfil"))
-    console.log(chalk.yellow("[3] Cerrar sesión"))
-    console.log(chalk.yellow("[4] Salir"))
-    if (isAdmin) {
-      console.log(chalk.green("\n=== Menú Administrador ==="))
-      console.log(chalk.cyan("[Usuarios]"))
-      console.log(chalk.yellow("[5] Crear Usuario"))
-      console.log(chalk.yellow("[6] Editar Usuario"))
-      console.log(chalk.yellow("[7] Eliminar Usuario"))
-      console.log(chalk.cyan("[Libros]"))
-      console.log(chalk.yellow("[8] Crear Libro"))
-      console.log(chalk.yellow("[9] Editar Libro"))
-      console.log(chalk.yellow("[0] Eliminar Libro"))
-    }
-  } else {
-    console.log(chalk.yellow("[1] Iniciar sesión"))
-    console.log(chalk.yellow("[2] Salir"))
-  }
-}
-
-const runMenu = async () => {
-  process.stdout.write("\x1Bc")
-  console.log(chalk.cyan.bold("Bienvenido a Alke-Biblioteca"))
-
+// Menú principal (bucle)
+async function runMenu() {
   while (true) {
-    const isLogged = !!api.defaults.headers.common["Authorization"]
+    clearTerminal()
+    console.log(chalk.blue.bold('=== Bienvenido a Alke-Biblioteca ===\n'))
+    const answers = await inquirer.prompt([
+      inquirerPrompt('list', 'choice', 'Selecciona una opción:', {
+        choices: [
+          { name: '1. Iniciar sesión', value: 'login' },
+          { name: '2. Salir', value: 'exit' }
+        ]
+      })
+    ])
 
-    showMenu(isLogged)
-
-    const key = readlineSync.keyIn('', { hideEchoBack: true, mask: '' })
-
-    process.stdout.write("\x1Bc")
-    console.log(chalk.bgGreen.bold("====== [ Alke-Biblioteca ] ======\n"))
-
-    if (isLogged) {
-      switch (key) {
-        case "1":
-          await showLibrary()
-          break
-        case "2":
-          await handleProfile()
-          break
-        case "3":
-          handleLogout()
-          break
-        case "4":
-          exit()
-          break
-        default:
-          await otherOption(key)
+    if (answers.choice === 'login') {
+      const loggedIn = await handleLogin()
+      if (loggedIn) {
+        await loggedMenu()
       }
-    } else {
-      switch (key) {
-        case "1":
-          await handleLogin()
-          break
-        case "2":
-          exit()
-          break
-        default:
-          await otherOption(key)
-      }
+    } else if (answers.choice === 'exit') {
+      clearTerminal()
+      console.log(chalk.yellow('¡Hasta pronto!'))
+      process.exit(0)
     }
   }
 }
 
-runMenu()
+// Menú logueado (bucle)
+async function loggedMenu() {
+  while (true) {
+    clearTerminal()
+    console.log(chalk.blue.bold('=== Menú Principal ==='))
+    const answers = await inquirer.prompt([
+      inquirerPrompt('list', 'choice', 'Selecciona una opción:', {
+        choices: [
+          { name: '1. Ver librería', value: 'viewLibrary' },
+          { name: '2. Mi biblioteca', value: 'viewMyLibrary' },
+          { name: '3. Añadir libro a mi biblioteca', value: 'addBook' },
+          { name: '4. Mi perfil', value: 'viewProfile' },
+          { name: '5. Cerrar sesión', value: 'logout' },
+          { name: '6. Salir', value: 'exit' }
+        ]
+      })
+    ])
+
+    switch (answers.choice) {
+      case 'viewLibrary':
+        await viewLibrary()
+        await inquirer.prompt(inquirerPrompt('continue'))
+        break
+      case 'viewMyLibrary':
+        await viewMyLibrary()
+        await inquirer.prompt(inquirerPrompt('continue'))
+        break
+      case 'addBook':
+        await addBookToLibrary()
+        await inquirer.prompt(inquirerPrompt('continue'))
+        break
+      case 'viewProfile':
+        await viewProfile()
+        await inquirer.prompt(inquirerPrompt('continue'))
+        break
+      case 'logout':
+        user = {}
+        console.log(chalk.yellow('Sesión cerrada.'))
+        await inquirer.prompt(inquirerPrompt('continue'))
+        return // Sale del bucle logueado y vuelve al menú principal
+      case 'exit':
+        clearTerminal()
+        console.log(chalk.yellow('¡Hasta pronto!'))
+        process.exit(0)
+    }
+  }
+}
+
+async function startApp() {
+  await runMenu()
+}
+
+startApp().catch(err => {
+  formatError(err, 'Error al iniciar la aplicación:')
+})
