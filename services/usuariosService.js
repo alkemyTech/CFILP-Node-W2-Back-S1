@@ -17,8 +17,11 @@ class UsuariosService {
       const isMatch = await bcrypt.compare(password, user.password)
       if (!isMatch) throw new CustomError("Credenciales inválidas", 401)
 
-      // Generar y devolver token
-      return generateToken(user)
+      // Generar token
+      const token = generateToken(user.id)
+
+      // Devolver el usuario con el token y sin la contraseña
+      return { user: { ...user.dataValues, password: undefined }, token }
     } catch (error) {
       if (error.name.includes("Sequelize")) throw handleSequelizeError(error)
       throw error

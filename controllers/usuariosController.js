@@ -20,11 +20,12 @@ class UsuariosController {
   async loginUsuario(req, res, next) {
     try {
       const { usuario, password } = req.body
-      const token = await usuariosService.login({ usuario, password })
+      const { user, token } = await usuariosService.login({ usuario, password })
 
       return res.status(200).json({
         message: "Inicio de sesión exitoso",
-        token
+        token,
+        user
       })
     } catch (error) {
       next(error)
