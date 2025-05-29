@@ -3,8 +3,8 @@ const { CustomError } = require("../utils/errorHandler.js");
 const { textoLimpio } = require("../utils/validarCampos.js");
 const e = require("express");
 
-const validaPrestamo = [
-  textoLimpio("id", 1, "numeric"),
+const validaPrestamo = (metodo = "POST") => [
+  textoLimpio("id", 1, 5, "numeric", metodo),
  
   // Middleware para verificar los errores después de las validaciones
   (req, res, next) => {
