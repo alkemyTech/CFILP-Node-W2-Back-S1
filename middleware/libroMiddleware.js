@@ -12,45 +12,23 @@ const validacionCamposLibro = (metodo = "POST") => [
   textoLimpio("categorias", 1, 2, "numeric", metodo),
   textoLimpio("disponibilidad", 1, 1, "numeric", metodo),
 
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
-  // Middleware para verificar errores después de las validaciones
-  (req, res, next) => {
-    const errors = validationResult(req);
-=======
->>>>>>> Stashed changes
-    // Middleware para verificar los errores después de las validaciones
-    (req, res, next) => {
-      const errors = validationResult(req)
-  
-      // Si hay errores, agruparlos y devolverlos juntos
-      if (!errors.isEmpty()) {
-        return res.status(400).json({
-          errors: errors.array().map(err => ({
-            field: err.param,
-            message: err.msg
-          }))
-        })
-      }
-  
-      // Si no hay errores, continuar con el siguiente middleware o controlador
-      next()
-    }
-]
->>>>>>> b125c6f9f6033d18e56ec459cf74276cc25b909d
+// Middleware para verificar los errores después de las validaciones
+(req, res, next) => {
+  const errors = validationResult(req);
 
-    if (!errors.isEmpty()) {
-      return res.status(400).json({
-        errors: errors.array().map((err) => ({
-          field: err.param,
-          message: err.msg,
-        })),
-      });
-    }
+  // Si hay errores, agruparlos y devolverlos juntos
+  if (!errors.isEmpty()) {
+    return res.status(400).json({
+      errors: errors.array().map(err => ({
+        field: err.param,
+        message: err.msg
+      }))
+    });
+  }
 
-    next();
-  },
+  // Si no hay errores, continuar con el siguiente middleware o controlador
+  next();
+},
 ];
 
 module.exports = { validacionCamposLibro };
