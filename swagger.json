@@ -24,6 +24,13 @@
     "/libros/": {
       "get": {
         "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -33,6 +40,11 @@
       "post": {
         "description": "",
         "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
           {
             "name": "body",
             "in": "body",
@@ -80,6 +92,11 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
           }
         ],
         "responses": {
@@ -95,6 +112,11 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
             "type": "string"
           },
           {
@@ -141,6 +163,11 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
             "type": "string"
           }
         ],
@@ -314,7 +341,7 @@
         }
       }
     },
-    "/prestamos/": {
+    "/prestamos/usuarioPrestamos": {
       "get": {
         "description": "",
         "parameters": [
@@ -329,7 +356,9 @@
             "description": "OK"
           }
         }
-      },
+      }
+    },
+    "/prestamos/": {
       "post": {
         "description": "",
         "parameters": [
@@ -354,9 +383,44 @@
         "responses": {
           "201": {
             "description": "Created"
+          }
+        }
+      },
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/prestamos/{prestamoId}/devolver": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "prestamoId",
+            "in": "path",
+            "required": true,
+            "type": "string"
           },
-          "400": {
-            "description": "Bad Request"
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
           }
         }
       }
@@ -408,46 +472,6 @@
         }
       },
       "delete": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "prestamoId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/prestamos/usuarioPrestamos": {
-      "get": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/prestamos/{prestamoId}/devolver": {
-      "post": {
         "description": "",
         "parameters": [
           {

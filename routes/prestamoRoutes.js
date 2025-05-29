@@ -13,7 +13,7 @@ prestamoRouter.use(authMiddleware)
 
 prestamoRouter.get("/usuarioPrestamos", prestamoController.obternerPrestamosPorUsuario)
 
-prestamoRouter.post("/", validaPrestamo, prestamoController.solicitarPrestamo)
+prestamoRouter.post("/", validaPrestamo("POST"), prestamoController.solicitarPrestamo)
 
 prestamoRouter.post("/:prestamoId/devolver", prestamoController.devolverLibro)
 
