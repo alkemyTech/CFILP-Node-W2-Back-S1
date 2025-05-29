@@ -64,8 +64,8 @@ class UsuariosController {
   // Actualizar Usuario
   async updateUsuario(req, res, next) {
     try {
-      const { nombre, apellido, usuarios } = req.body
-      await usuariosService.updateUsuario(req.params.id, { nombre, apellido, usuarios })
+      const { nombre, apellido, usuario } = req.body
+      await usuariosService.updateUsuario(req.params.id, { nombre, apellido, usuario })
 
       res.status(200).json({ message: "Usuario actualizado exitosamente" })
     } catch (error) {

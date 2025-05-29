@@ -10,7 +10,7 @@ const validacionCamposLibro = (metodo = "POST") => [
   textoLimpio("autor", 3, 30, "alpha", metodo),
   textoLimpio("anio", 4, 4, "numeric", metodo),
   textoLimpio("categorias", 1, 2, "numeric", metodo),
-  textoLimpio("disponibilidad", 1, 1, "numeric", metodo),
+  textoLimpio("disponibilidad", 1, 2, "numeric", metodo),
 
 // Middleware para verificar los errores después de las validaciones
 (req, res, next) => {
