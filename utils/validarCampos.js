@@ -1,33 +1,40 @@
-const { body } = require("express-validator");
+const { body } = require("express-validator")
 
-//esta funcion recibe el campo y elimina el espacio en blanco al principio y al final,
-// luego valida que el campo no este vacio y que tenga una longitud minima,
-// si el tipo es alpha valida que solo contenga letras,
-// si es alphanumeric valida que contenga letras y numeros
-// si no es ninguno de los dos tipos no hace nada
+const textoLimpio = (campo, min, max, tipo, metodo = "POST") => {
+  let campoLimpio = body(campo).trim()
 
-const textoLimpio = (campo, min, tipo) => {
-  let campoLimpio = body(campo)
-    .trim()
-    .notEmpty()
-    .withMessage(`El campo ${campo} es obligatorio`)
+  if (metodo === "PUT") {
+    campoLimpio = campoLimpio
+      .optional()
+      .notEmpty()
+      .withMessage(`El campo ${campo} no puede estar vacío`)
+  } else {
+    campoLimpio = campoLimpio
+      .notEmpty()
+      .withMessage(`El campo ${campo} es obligatorio`)
+  }
+
+  campoLimpio = campoLimpio
     .isLength({ min })
-    .withMessage(`El campo ${campo} debe tener al menos ${min} caracteres`);
+    .withMessage(`El campo ${campo} debe tener al menos ${min} caracteres`)
+    .isLength({ max })
+    .withMessage(`El campo ${campo} no puede tener más de ${max} caracteres`)
 
   if (tipo === "alpha") {
     campoLimpio = campoLimpio
       .isAlpha("es-ES", { ignore: " " })
-      .withMessage(`El campo ${campo} solo puede contener letras`);
+      .withMessage(`El campo ${campo} solo puede contener letras`)
   } else if (tipo === "alphanumeric") {
     campoLimpio = campoLimpio
       .isAlphanumeric("es-ES", { ignore: " " })
-      .withMessage(`El campo ${campo} solo puede contener letras y números`);
+      .withMessage(`El campo ${campo} solo puede contener letras y números`)
   } else if (tipo === "numeric") {
     campoLimpio = campoLimpio
       .isNumeric()
-      .withMessage(`El campo ${campo} solo puede contener números`);
+      .withMessage(`El campo ${campo} solo puede contener números`)
   }
-  return campoLimpio;
-};
 
-module.exports = { textoLimpio };
+  return campoLimpio
+}
+
+module.exports = { textoLimpio }
